@@ -1,6 +1,7 @@
 #include "Boat/SpearfishBoat.h"
 
 #include "Boat/SpearfishStation.h"
+#include "Components/BoxComponent.h"
 #include "Components/PointLightComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Core/SpearfishGameState.h"
@@ -45,6 +46,21 @@ ASpearfishBoat::ASpearfishBoat()
 	Root = CreateDefaultSubobject<USceneComponent>(TEXT("Root"));
 	Root->SetMobility(EComponentMobility::Movable);
 	RootComponent = Root;
+
+	DeckFloor = CreateDefaultSubobject<UBoxComponent>(TEXT("DeckFloor"));
+	DeckFloor->SetupAttachment(Root);
+	DeckFloor->SetRelativeLocation(FVector(0.f, 0.f, SpearfishBoatPrivate::DeckTop - 10.f));
+	DeckFloor->SetBoxExtent(FVector(845.f, 310.f, 10.f));
+	DeckFloor->SetCollisionProfileName(TEXT("BlockAll"));
+	DeckFloor->SetCanEverAffectNavigation(false);
+
+	BowFloor = CreateDefaultSubobject<UBoxComponent>(TEXT("BowFloor"));
+	BowFloor->SetupAttachment(Root);
+	BowFloor->SetRelativeLocation(FVector(850.f, 0.f, SpearfishBoatPrivate::DeckTop - 10.f));
+	BowFloor->SetRelativeRotation(FRotator(0.f, 45.f, 0.f));
+	BowFloor->SetBoxExtent(FVector(220.f, 220.f, 10.f));
+	BowFloor->SetCollisionProfileName(TEXT("BlockAll"));
+	BowFloor->SetCanEverAffectNavigation(false);
 
 	HelmSeat = CreateDefaultSubobject<USceneComponent>(TEXT("HelmSeat"));
 	HelmSeat->SetupAttachment(Root);
@@ -105,8 +121,9 @@ void ASpearfishBoat::BuildHull()
 	Part(ESpearfishShape::Cube, FVector(0, 0, 10), FRotator::ZeroRotator, FVector(1700, 640, 200), HullWhite, true);
 	Part(ESpearfishShape::Cube, FVector(850, 0, 10), FRotator(0, 45, 0), FVector(452, 452, 200), HullWhite, true);
 	Part(ESpearfishShape::Cube, FVector(0, 0, -40), FRotator::ZeroRotator, FVector(1710, 650, 30), HullStripe, false);
-	Part(ESpearfishShape::Cube, FVector(0, 0, DeckTop - 10), FRotator::ZeroRotator, FVector(1690, 620, 20), Teak, true);
-	Part(ESpearfishShape::Cube, FVector(850, 0, DeckTop - 10), FRotator(0, 45, 0), FVector(440, 440, 20), Teak, true);
+	// Deck planks are visual only: DeckFloor/BowFloor (constructor) carry the walkable collision.
+	Part(ESpearfishShape::Cube, FVector(0, 0, DeckTop - 10), FRotator::ZeroRotator, FVector(1690, 620, 20), Teak, false);
+	Part(ESpearfishShape::Cube, FVector(850, 0, DeckTop - 10), FRotator(0, 45, 0), FVector(440, 440, 20), Teak, false);
 
 	// Rails (with a gap at the stern for the ladder and on the starboard side for the guest gangway).
 	Part(ESpearfishShape::Cube, FVector(0, -318, DeckTop + 45), FRotator::ZeroRotator, FVector(1700, 8, 90), HullWhite, true);

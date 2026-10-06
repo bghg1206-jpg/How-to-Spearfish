@@ -8,6 +8,7 @@
 
 class ASpearfishCharacter;
 class ASpearfishStation;
+class UBoxComponent;
 class UPointLightComponent;
 class USpearfishAutoChefComponent;
 class USpearfishCatchStorageComponent;
@@ -96,6 +97,17 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Boat")
 	TObjectPtr<USceneComponent> HelmSeat;
+
+	/**
+	 * Walkable deck collision. Default subobjects are stably named, so the character movement component can
+	 * replicate players' positions relative to the moving boat (runtime-created parts cannot be a networked
+	 * movement base and would make walking on a sailing boat jitter on clients).
+	 */
+	UPROPERTY(VisibleAnywhere, Category = "Boat")
+	TObjectPtr<UBoxComponent> DeckFloor;
+
+	UPROPERTY(VisibleAnywhere, Category = "Boat")
+	TObjectPtr<UBoxComponent> BowFloor;
 
 	UPROPERTY(VisibleAnywhere, Category = "Boat")
 	TObjectPtr<UPointLightComponent> MastLight;
