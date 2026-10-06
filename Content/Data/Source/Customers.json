@@ -1,0 +1,112 @@
+[
+	{
+		"Name": "Tourist",
+		"DisplayName": "Sunburnt Tourist",
+		"PatienceSeconds": 170,
+		"TipMultiplier": 1.0,
+		"QualityExpectation": 0.45,
+		"ReputationWeight": 1.0,
+		"SpawnWeight": 5,
+		"MinReputation": 0,
+		"FavoriteTags": [
+			"Grilled",
+			"Fried"
+		],
+		"Dishes": 1,
+		"bShareRumors": false,
+		"OutfitColor": {
+			"R": 0.95,
+			"G": 0.45,
+			"B": 0.55,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "LocalFisher",
+		"DisplayName": "Local Fisher",
+		"PatienceSeconds": 210,
+		"TipMultiplier": 0.6,
+		"QualityExpectation": 0.7,
+		"ReputationWeight": 1.0,
+		"SpawnWeight": 3,
+		"MinReputation": 0,
+		"FavoriteTags": [
+			"Raw",
+			"Hearty"
+		],
+		"Dishes": 1,
+		"bShareRumors": true,
+		"OutfitColor": {
+			"R": 0.3,
+			"G": 0.45,
+			"B": 0.7,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "Family",
+		"DisplayName": "Island Family",
+		"PatienceSeconds": 150,
+		"TipMultiplier": 0.9,
+		"QualityExpectation": 0.5,
+		"ReputationWeight": 1.5,
+		"SpawnWeight": 2,
+		"MinReputation": 0.5,
+		"FavoriteTags": [
+			"Fried",
+			"Hearty"
+		],
+		"Dishes": 2,
+		"bShareRumors": false,
+		"OutfitColor": {
+			"R": 0.95,
+			"G": 0.8,
+			"B": 0.25,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "Honeymooners",
+		"DisplayName": "Honeymooners",
+		"PatienceSeconds": 190,
+		"TipMultiplier": 1.4,
+		"QualityExpectation": 0.6,
+		"ReputationWeight": 1.2,
+		"SpawnWeight": 1.5,
+		"MinReputation": 1.0,
+		"FavoriteTags": [
+			"Fancy",
+			"Raw"
+		],
+		"Dishes": 2,
+		"bShareRumors": false,
+		"OutfitColor": {
+			"R": 0.95,
+			"G": 0.95,
+			"B": 0.95,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "FoodCritic",
+		"DisplayName": "Food Critic",
+		"PatienceSeconds": 130,
+		"TipMultiplier": 2.0,
+		"QualityExpectation": 0.85,
+		"ReputationWeight": 3.0,
+		"SpawnWeight": 0.6,
+		"MinReputation": 2.0,
+		"FavoriteTags": [
+			"Fancy",
+			"Raw"
+		],
+		"Dishes": 1,
+		"bShareRumors": false,
+		"OutfitColor": {
+			"R": 0.15,
+			"G": 0.15,
+			"B": 0.18,
+			"A": 1.0
+		}
+	}
+]

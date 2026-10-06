@@ -1,0 +1,544 @@
+[
+	{
+		"Name": "CoralCove",
+		"DisplayName": "Coral Cove",
+		"Description": "Warm turquoise shallows, a living reef and a drop-off into the blue. Home waters.",
+		"HubName": "Pelican Key",
+		"bStarter": true,
+		"Unlock": {
+			"Price": 0,
+			"MinReputation": 0,
+			"MinDay": 0,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": ""
+		},
+		"Map": "",
+		"Seed": 1337,
+		"Terrain": {
+			"HalfExtentCm": 9000,
+			"ShallowDepthM": 3,
+			"MaxDepthM": 46,
+			"ReefDensity": 0.65,
+			"RockDensity": 0.5,
+			"KelpDensity": 0,
+			"SeagrassDensity": 0.45,
+			"Wrecks": 1,
+			"Caves": 2,
+			"GiantClams": 5
+		},
+		"Palette": {
+			"ShallowWater": {
+				"R": 0.08,
+				"G": 0.62,
+				"B": 0.68,
+				"A": 1.0
+			},
+			"DeepWater": {
+				"R": 0.01,
+				"G": 0.07,
+				"B": 0.2,
+				"A": 1.0
+			},
+			"Sand": {
+				"R": 0.88,
+				"G": 0.8,
+				"B": 0.62,
+				"A": 1.0
+			},
+			"Rock": {
+				"R": 0.38,
+				"G": 0.35,
+				"B": 0.32,
+				"A": 1.0
+			},
+			"Vegetation": {
+				"R": 0.25,
+				"G": 0.55,
+				"B": 0.25,
+				"A": 1.0
+			},
+			"Coral": [
+				{
+					"R": 0.95,
+					"G": 0.35,
+					"B": 0.45,
+					"A": 1.0
+				},
+				{
+					"R": 0.98,
+					"G": 0.6,
+					"B": 0.2,
+					"A": 1.0
+				},
+				{
+					"R": 0.6,
+					"G": 0.3,
+					"B": 0.85,
+					"A": 1.0
+				},
+				{
+					"R": 0.2,
+					"G": 0.75,
+					"B": 0.7,
+					"A": 1.0
+				},
+				{
+					"R": 0.95,
+					"G": 0.85,
+					"B": 0.3,
+					"A": 1.0
+				},
+				{
+					"R": 0.9,
+					"G": 0.2,
+					"B": 0.25,
+					"A": 1.0
+				}
+			],
+			"UnderwaterFog": 0.016
+		},
+		"DepthZones": [
+			{
+				"DisplayName": "Sunlit Shallows",
+				"MinDepthM": 0,
+				"MaxDepthM": 10,
+				"AirMultiplier": 1.0,
+				"ValueMultiplier": 1.0
+			},
+			{
+				"DisplayName": "Reef Slope",
+				"MinDepthM": 10,
+				"MaxDepthM": 20,
+				"AirMultiplier": 1.0,
+				"ValueMultiplier": 1.1
+			},
+			{
+				"DisplayName": "The Drop-off",
+				"MinDepthM": 20,
+				"MaxDepthM": 32,
+				"AirMultiplier": 1.1,
+				"ValueMultiplier": 1.25
+			},
+			{
+				"DisplayName": "Blue Trench",
+				"MinDepthM": 32,
+				"MaxDepthM": 80,
+				"AirMultiplier": 1.2,
+				"ValueMultiplier": 1.5
+			}
+		],
+		"Spawns": [
+			{
+				"SpeciesId": "BluestripeSnapper",
+				"Groups": 4
+			},
+			{
+				"SpeciesId": "YellowtailJack",
+				"Groups": 3
+			},
+			{
+				"SpeciesId": "RainbowParrotfish",
+				"Groups": 6
+			},
+			{
+				"SpeciesId": "RedHogfish",
+				"Groups": 4
+			},
+			{
+				"SpeciesId": "CoralLionfish",
+				"Groups": 6
+			},
+			{
+				"SpeciesId": "SpeckledGrouper",
+				"Groups": 4
+			},
+			{
+				"SpeciesId": "SilverBarracuda",
+				"Groups": 3
+			},
+			{
+				"SpeciesId": "MahiMahi",
+				"Groups": 2
+			},
+			{
+				"SpeciesId": "GoldenTrevally",
+				"Groups": 1
+			},
+			{
+				"SpeciesId": "MidnightSquirrelfish",
+				"Groups": 3
+			},
+			{
+				"SpeciesId": "DogtoothTuna",
+				"Groups": 2
+			},
+			{
+				"SpeciesId": "BlacktipReefShark",
+				"Groups": 2
+			},
+			{
+				"SpeciesId": "GreenMoray",
+				"Groups": 4
+			},
+			{
+				"SpeciesId": "MoonJellyfish",
+				"Groups": 6
+			},
+			{
+				"SpeciesId": "SouthernStingray",
+				"Groups": 2
+			}
+		],
+		"Loot": [
+			{
+				"Id": "ConchShell",
+				"Weight": 6
+			},
+			{
+				"Id": "SpottedCowrie",
+				"Weight": 3
+			},
+			{
+				"Id": "WhitePearl",
+				"Weight": 1.2
+			},
+			{
+				"Id": "OldCoin",
+				"Weight": 1.5
+			},
+			{
+				"Id": "Amphora",
+				"Weight": 1
+			},
+			{
+				"Id": "BrassPorthole",
+				"Weight": 1
+			},
+			{
+				"Id": "MessageInABottle",
+				"Weight": 0.6
+			},
+			{
+				"Id": "GoldDoubloon",
+				"Weight": 0.3
+			},
+			{
+				"Id": "CaptainsCompass",
+				"Weight": 0.1
+			}
+		],
+		"Events": [
+			"SunscaleSighting",
+			"StormTreasure",
+			"CriticVisit",
+			"BaitBall",
+			"TrevallyRun"
+		]
+	},
+	{
+		"Name": "KelpNarrows",
+		"DisplayName": "Kelp Narrows",
+		"Description": "Cold green water and towering kelp forests full of hiding places - and things that hide.",
+		"HubName": "Foghorn Point",
+		"bStarter": false,
+		"Unlock": {
+			"Price": 1200,
+			"MinReputation": 2.5,
+			"MinDay": 5,
+			"MinSpeciesCaught": 8,
+			"Prerequisite": "CoralCove"
+		},
+		"Map": "",
+		"Seed": 4242,
+		"Terrain": {
+			"HalfExtentCm": 9500,
+			"ShallowDepthM": 4,
+			"MaxDepthM": 48,
+			"ReefDensity": 0.25,
+			"RockDensity": 0.8,
+			"KelpDensity": 0.8,
+			"SeagrassDensity": 0.1,
+			"Wrecks": 1,
+			"Caves": 3,
+			"GiantClams": 2
+		},
+		"Palette": {
+			"ShallowWater": {
+				"R": 0.12,
+				"G": 0.45,
+				"B": 0.38,
+				"A": 1.0
+			},
+			"DeepWater": {
+				"R": 0.02,
+				"G": 0.1,
+				"B": 0.12,
+				"A": 1.0
+			},
+			"Sand": {
+				"R": 0.6,
+				"G": 0.56,
+				"B": 0.45,
+				"A": 1.0
+			},
+			"Rock": {
+				"R": 0.28,
+				"G": 0.3,
+				"B": 0.28,
+				"A": 1.0
+			},
+			"Vegetation": {
+				"R": 0.45,
+				"G": 0.38,
+				"B": 0.12,
+				"A": 1.0
+			},
+			"Coral": [
+				{
+					"R": 0.85,
+					"G": 0.4,
+					"B": 0.25,
+					"A": 1.0
+				},
+				{
+					"R": 0.6,
+					"G": 0.2,
+					"B": 0.5,
+					"A": 1.0
+				},
+				{
+					"R": 0.95,
+					"G": 0.7,
+					"B": 0.3,
+					"A": 1.0
+				}
+			],
+			"UnderwaterFog": 0.024
+		},
+		"DepthZones": [
+			{
+				"DisplayName": "Kelp Canopy",
+				"MinDepthM": 0,
+				"MaxDepthM": 12,
+				"AirMultiplier": 1.0,
+				"ValueMultiplier": 1.0
+			},
+			{
+				"DisplayName": "Forest Floor",
+				"MinDepthM": 12,
+				"MaxDepthM": 25,
+				"AirMultiplier": 1.05,
+				"ValueMultiplier": 1.15
+			},
+			{
+				"DisplayName": "Rock Walls",
+				"MinDepthM": 25,
+				"MaxDepthM": 48,
+				"AirMultiplier": 1.15,
+				"ValueMultiplier": 1.4
+			}
+		],
+		"Spawns": [
+			{
+				"SpeciesId": "KelpBass",
+				"Groups": 6
+			},
+			{
+				"SpeciesId": "CaliforniaSheephead",
+				"Groups": 4
+			},
+			{
+				"SpeciesId": "Lingcod",
+				"Groups": 4
+			},
+			{
+				"SpeciesId": "GiantSeaBass",
+				"Groups": 0
+			},
+			{
+				"SpeciesId": "YellowtailJack",
+				"Groups": 2
+			},
+			{
+				"SpeciesId": "MoonJellyfish",
+				"Groups": 4
+			},
+			{
+				"SpeciesId": "GreenMoray",
+				"Groups": 3
+			}
+		],
+		"Loot": [
+			{
+				"Id": "ConchShell",
+				"Weight": 3
+			},
+			{
+				"Id": "BrassPorthole",
+				"Weight": 2
+			},
+			{
+				"Id": "OldCoin",
+				"Weight": 1
+			},
+			{
+				"Id": "MessageInABottle",
+				"Weight": 1
+			},
+			{
+				"Id": "CaptainsCompass",
+				"Weight": 0.2
+			}
+		],
+		"Events": [
+			"GiantBassSighting",
+			"StormTreasure",
+			"CriticVisit"
+		]
+	},
+	{
+		"Name": "WreckGraveyard",
+		"DisplayName": "Wreck Graveyard",
+		"Description": "A ship-eating reef littered with hulls, cargo and the predators that patrol them. (Coming soon)",
+		"HubName": "Lantern Rock",
+		"bStarter": false,
+		"Unlock": {
+			"Price": 3000,
+			"MinReputation": 3.5,
+			"MinDay": 9,
+			"MinSpeciesCaught": 14,
+			"Prerequisite": "KelpNarrows"
+		},
+		"Map": "",
+		"Seed": 9001,
+		"Terrain": {
+			"HalfExtentCm": 10000,
+			"ShallowDepthM": 6,
+			"MaxDepthM": 60,
+			"ReefDensity": 0.35,
+			"RockDensity": 0.6,
+			"KelpDensity": 0,
+			"SeagrassDensity": 0.05,
+			"Wrecks": 4,
+			"Caves": 2,
+			"GiantClams": 2
+		},
+		"Palette": {
+			"ShallowWater": {
+				"R": 0.05,
+				"G": 0.4,
+				"B": 0.55,
+				"A": 1.0
+			},
+			"DeepWater": {
+				"R": 0.0,
+				"G": 0.04,
+				"B": 0.12,
+				"A": 1.0
+			},
+			"Sand": {
+				"R": 0.7,
+				"G": 0.66,
+				"B": 0.55,
+				"A": 1.0
+			},
+			"Rock": {
+				"R": 0.3,
+				"G": 0.28,
+				"B": 0.26,
+				"A": 1.0
+			},
+			"Vegetation": {
+				"R": 0.2,
+				"G": 0.4,
+				"B": 0.25,
+				"A": 1.0
+			},
+			"Coral": [
+				{
+					"R": 0.8,
+					"G": 0.3,
+					"B": 0.4,
+					"A": 1.0
+				},
+				{
+					"R": 0.4,
+					"G": 0.3,
+					"B": 0.8,
+					"A": 1.0
+				}
+			],
+			"UnderwaterFog": 0.028
+		},
+		"DepthZones": [
+			{
+				"DisplayName": "Wreck Flats",
+				"MinDepthM": 0,
+				"MaxDepthM": 20,
+				"AirMultiplier": 1.0,
+				"ValueMultiplier": 1.1
+			},
+			{
+				"DisplayName": "Cargo Fields",
+				"MinDepthM": 20,
+				"MaxDepthM": 40,
+				"AirMultiplier": 1.1,
+				"ValueMultiplier": 1.35
+			},
+			{
+				"DisplayName": "The Hull",
+				"MinDepthM": 40,
+				"MaxDepthM": 60,
+				"AirMultiplier": 1.25,
+				"ValueMultiplier": 1.6
+			}
+		],
+		"Spawns": [
+			{
+				"SpeciesId": "SpeckledGrouper",
+				"Groups": 6
+			},
+			{
+				"SpeciesId": "SilverBarracuda",
+				"Groups": 5
+			},
+			{
+				"SpeciesId": "CoralLionfish",
+				"Groups": 6
+			},
+			{
+				"SpeciesId": "BlacktipReefShark",
+				"Groups": 4
+			},
+			{
+				"SpeciesId": "GreenMoray",
+				"Groups": 4
+			}
+		],
+		"Loot": [
+			{
+				"Id": "OldCoin",
+				"Weight": 4
+			},
+			{
+				"Id": "BrassPorthole",
+				"Weight": 4
+			},
+			{
+				"Id": "Amphora",
+				"Weight": 2
+			},
+			{
+				"Id": "GoldDoubloon",
+				"Weight": 1
+			},
+			{
+				"Id": "CaptainsCompass",
+				"Weight": 0.4
+			}
+		],
+		"Events": [
+			"StormTreasure"
+		]
+	}
+]

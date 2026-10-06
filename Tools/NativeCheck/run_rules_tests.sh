@@ -10,5 +10,5 @@ python3 "$HERE/gen_uht.py" "$MODULE" "$BUILD/gen" > "$BUILD/gen.log" || { cat "$
 CXX="${CXX:-clang++}"
 "$CXX" -std=c++20 -O1 -g -Wall -Wextra -Wno-unused-parameter -Werror=return-type \
   -I"$HERE/stub" -I"$BUILD/gen" -I"$MODULE" \
-  "$MODULE"/Rules/*.cpp "$HERE/RulesTestMain.cpp" -o "$BUILD/rules_tests"
+  "$MODULE"/Rules/*.cpp "$MODULE"/World/SpearfishTerrain.cpp "$HERE/RulesTestMain.cpp" -o "$BUILD/rules_tests"
 "$BUILD/rules_tests"

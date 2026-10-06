@@ -16,6 +16,7 @@
 #include "Rules/OrderRules.h"
 #include "Rules/OxygenRules.h"
 #include "Rules/RoleRules.h"
+#include "World/SpearfishTerrain.h"
 
 class FSpearfishRulesTestContext
 {
@@ -766,6 +767,100 @@ namespace SpearfishRulesTests
 		SF_CHECK(T, SpearfishFish::DecideMind(ESpearfishFishMind::Wander, Jelly) == ESpearfishFishMind::Drift);
 	}
 
+
+	// ------------------------------------------------------------------------------------ Terrain
+	inline FSpearfishTerrainParams CoralCoveParams()
+	{
+		FSpearfishTerrainParams Params;
+		Params.HalfExtentCm = 9000.f;
+		Params.ShallowDepthM = 3.f;
+		Params.MaxDepthM = 46.f;
+		Params.ReefDensity = 0.65f;
+		Params.Wrecks = 1;
+		Params.Caves = 2;
+		Params.GiantClams = 5;
+		return Params;
+	}
+
+	inline void TerrainIsDeterministic(FSpearfishRulesTestContext& T)
+	{
+		FSpearfishTerrain A;
+		FSpearfishTerrain B;
+		FSpearfishTerrain C;
+		A.Initialize(CoralCoveParams(), 1337);
+		B.Initialize(CoralCoveParams(), 1337);
+		C.Initialize(CoralCoveParams(), 4242);
+		FRandomStream Rng(5);
+		int32 Different = 0;
+		for (int32 Index = 0; Index < 200; ++Index)
+		{
+			const float X = Rng.FRandRange(-9000.f, 9000.f);
+			const float Y = Rng.FRandRange(-9000.f, 9000.f);
+			SF_CHECK(T, A.GetSeabedZ(X, Y) == B.GetSeabedZ(X, Y));
+			SF_CHECK(T, A.GetBiome(X, Y) == B.GetBiome(X, Y));
+			Different += FMath::Abs(A.GetSeabedZ(X, Y) - C.GetSeabedZ(X, Y)) > 1.f ? 1 : 0;
+		}
+		SF_CHECK(T, Different > 100);
+		SF_CHECK(T, A.GetLayout().POIs.Num() == B.GetLayout().POIs.Num());
+	}
+
+	inline void TerrainLayoutIsPlayable(FSpearfishRulesTestContext& T)
+	{
+		FSpearfishTerrain Terrain;
+		Terrain.Initialize(CoralCoveParams(), 1337);
+		const FSpearfishTerrainLayout& Layout = Terrain.GetLayout();
+
+		// Island above water, dock on land, boat moored in water deep enough for the hull.
+		SF_CHECK(T, Terrain.GetSeabedZ(static_cast<float>(Layout.IslandCenter.X), static_cast<float>(Layout.IslandCenter.Y)) > 300.f);
+		SF_CHECK(T, Layout.DockLocation.Z > 0.0);
+		SF_CHECK(T, Terrain.GetSeabedZ(static_cast<float>(Layout.BoatStart.X), static_cast<float>(Layout.BoatStart.Y)) < -200.f);
+		SF_CHECK(T, Terrain.GetBiome(static_cast<float>(Layout.IslandCenter.X), static_cast<float>(Layout.IslandCenter.Y)) == FName(TEXT("Land")));
+
+		// Deep water in the far corner, within the configured maximum (+ trench).
+		const float FarDepth = Terrain.GetWaterDepthM(8000.f, 8000.f, 0.f);
+		SF_CHECK(T, FarDepth > 30.f);
+		SF_CHECK(T, FarDepth < 46.f + 10.f);
+
+		int32 Wrecks = 0;
+		int32 Caves = 0;
+		for (const FSpearfishPOI& POI : Layout.POIs)
+		{
+			if (POI.Type == ESpearfishPOIType::Wreck)
+			{
+				++Wrecks;
+				const float Depth = -static_cast<float>(POI.Location.Z) / 100.f;
+				SF_CHECK(T, Depth >= 15.f && Depth <= 40.f);
+				SF_CHECK(T, Terrain.GetBiome(static_cast<float>(POI.Location.X), static_cast<float>(POI.Location.Y)) == FName(TEXT("Wreck")));
+			}
+			if (POI.Type == ESpearfishPOIType::Cave)
+			{
+				++Caves;
+			}
+			SF_CHECK(T, Terrain.IsInsideBounds(static_cast<float>(POI.Location.X), static_cast<float>(POI.Location.Y)));
+		}
+		SF_CHECK(T, Wrecks == 1);
+		SF_CHECK(T, Caves == 2);
+
+		// Biome variety and no extreme cliffs in the playable area.
+		int32 Reef = 0;
+		int32 Sand = 0;
+		float MaxStep = 0.f;
+		for (float X = -8800.f; X < 8800.f; X += 400.f)
+		{
+			for (float Y = -8800.f; Y < 8800.f; Y += 400.f)
+			{
+				const FName Biome = Terrain.GetBiome(X, Y);
+				Reef += Biome == FName(TEXT("Reef")) ? 1 : 0;
+				Sand += Biome == FName(TEXT("Sand")) ? 1 : 0;
+				MaxStep = FMath::Max(MaxStep, FMath::Abs(Terrain.GetSeabedZ(X + 100.f, Y) - Terrain.GetSeabedZ(X, Y)));
+			}
+		}
+		SF_CHECK(T, Reef > 50);
+		SF_CHECK(T, Sand > 50);
+		// Drop-off walls are intended (< ~63 degrees); POI terracing artefacts produced > 2.4 m steps.
+		SF_CHECK(T, MaxStep < 200.f);
+	}
+
 	struct FCase
 	{
 		const TCHAR* Name;
@@ -804,6 +899,8 @@ namespace SpearfishRulesTests
 		Cases.Add({ TEXT("Fish.SizeWeightValue"), &FishSizesWeightsAndValues });
 		Cases.Add({ TEXT("Fish.Perception"), &FishPerceptionRewardsSlowApproach });
 		Cases.Add({ TEXT("Fish.Mind"), &FishMindDecisions });
+		Cases.Add({ TEXT("Terrain.Deterministic"), &TerrainIsDeterministic });
+		Cases.Add({ TEXT("Terrain.Playable"), &TerrainLayoutIsPlayable });
 		return Cases;
 	}
 }

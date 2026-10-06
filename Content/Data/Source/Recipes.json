@@ -1,0 +1,589 @@
+[
+	{
+		"Name": "SnapperCeviche",
+		"DisplayName": "Snapper Ceviche",
+		"Description": "Lime-cured snapper with chilli and coconut.",
+		"Ingredients": [
+			{
+				"SpeciesId": "BluestripeSnapper",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Chop",
+			"Season",
+			"Plate"
+		],
+		"BasePrice": 34,
+		"Difficulty": 0.2,
+		"Tags": [
+			"Raw",
+			"Fresh"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.95,
+			"G": 0.9,
+			"B": 0.7,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "GrilledSnapper",
+		"DisplayName": "Whole Grilled Snapper",
+		"Description": "A proper-sized snapper, scored and charred over the coals.",
+		"Ingredients": [
+			{
+				"SpeciesId": "BluestripeSnapper",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 35,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Season",
+			"Grill",
+			"Plate"
+		],
+		"BasePrice": 44,
+		"Difficulty": 0.3,
+		"Tags": [
+			"Grilled"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.85,
+			"G": 0.45,
+			"B": 0.2,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "CatchFry",
+		"DisplayName": "Catch-of-the-Day Fry",
+		"Description": "Whatever the reef gave us, battered and fried.",
+		"Ingredients": [
+			{
+				"SpeciesId": "",
+				"Category": "ReefFish",
+				"Count": 2,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Fry",
+			"Plate"
+		],
+		"BasePrice": 40,
+		"Difficulty": 0.25,
+		"Tags": [
+			"Fried",
+			"Hearty"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.9,
+			"G": 0.75,
+			"B": 0.35,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "JackTacos",
+		"DisplayName": "Jack Tacos",
+		"Description": "Seared yellowtail jack in grilled tortillas with mango salsa.",
+		"Ingredients": [
+			{
+				"SpeciesId": "YellowtailJack",
+				"Category": "",
+				"Count": 2,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Grill",
+			"Chop",
+			"Plate"
+		],
+		"BasePrice": 62,
+		"Difficulty": 0.4,
+		"Tags": [
+			"Grilled",
+			"Hearty"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.95,
+			"G": 0.7,
+			"B": 0.3,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "ParrotfishCurry",
+		"DisplayName": "Reef Curry",
+		"Description": "Parrotfish and a second reef fish simmered in coconut curry.",
+		"Ingredients": [
+			{
+				"SpeciesId": "RainbowParrotfish",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			},
+			{
+				"SpeciesId": "",
+				"Category": "ReefFish",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Chop",
+			"Simmer",
+			"Season",
+			"Plate"
+		],
+		"BasePrice": 58,
+		"Difficulty": 0.4,
+		"Tags": [
+			"Hearty"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.95,
+			"G": 0.6,
+			"B": 0.15,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "LionfishFritters",
+		"DisplayName": "Lionfish Fritters",
+		"Description": "Crispy fritters. Every order is a win for the reef.",
+		"Ingredients": [
+			{
+				"SpeciesId": "CoralLionfish",
+				"Category": "",
+				"Count": 2,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Fry",
+			"Season",
+			"Plate"
+		],
+		"BasePrice": 56,
+		"Difficulty": 0.35,
+		"Tags": [
+			"Fried"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.85,
+			"G": 0.55,
+			"B": 0.25,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "BarracudaSkewers",
+		"DisplayName": "Barracuda Skewers",
+		"Description": "Firm cubes of barracuda grilled on sugarcane sticks.",
+		"Ingredients": [
+			{
+				"SpeciesId": "SilverBarracuda",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Chop",
+			"Season",
+			"Grill",
+			"Plate"
+		],
+		"BasePrice": 54,
+		"Difficulty": 0.4,
+		"Tags": [
+			"Grilled"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.8,
+			"G": 0.5,
+			"B": 0.3,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "MahiSandwich",
+		"DisplayName": "Mahi Sandwich",
+		"Description": "Blackened mahi-mahi on a toasted bun.",
+		"Ingredients": [
+			{
+				"SpeciesId": "MahiMahi",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Grill",
+			"Season",
+			"Plate"
+		],
+		"BasePrice": 60,
+		"Difficulty": 0.4,
+		"Tags": [
+			"Grilled",
+			"Hearty"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.8,
+			"G": 0.6,
+			"B": 0.35,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "HogfishSashimi",
+		"DisplayName": "Hogfish Sashimi",
+		"Description": "Paper-thin slices of sweet hogfish. Only a big one will do.",
+		"Ingredients": [
+			{
+				"SpeciesId": "RedHogfish",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 40,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Chop",
+			"Plate"
+		],
+		"BasePrice": 66,
+		"Difficulty": 0.55,
+		"Tags": [
+			"Raw",
+			"Fancy"
+		],
+		"MinReputation": 1.5,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.98,
+			"G": 0.85,
+			"B": 0.8,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "SquirrelfishSoup",
+		"DisplayName": "Midnight Soup",
+		"Description": "Clear broth with three crimson squirrelfish and lemongrass.",
+		"Ingredients": [
+			{
+				"SpeciesId": "MidnightSquirrelfish",
+				"Category": "",
+				"Count": 3,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Simmer",
+			"Season",
+			"Plate"
+		],
+		"BasePrice": 78,
+		"Difficulty": 0.45,
+		"Tags": [
+			"Hearty",
+			"Fancy"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.95,
+			"G": 0.4,
+			"B": 0.35,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "GrouperSteak",
+		"DisplayName": "Grouper Steak",
+		"Description": "Thick-cut grouper with brown butter. Needs a real fish.",
+		"Ingredients": [
+			{
+				"SpeciesId": "SpeckledGrouper",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 50,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Season",
+			"Grill",
+			"Plate"
+		],
+		"BasePrice": 84,
+		"Difficulty": 0.5,
+		"Tags": [
+			"Grilled",
+			"Fancy"
+		],
+		"MinReputation": 1.0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.95,
+			"G": 0.85,
+			"B": 0.6,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "TrevallyPoke",
+		"DisplayName": "Golden Poke Bowl",
+		"Description": "Golden trevally and a reef fish over rice with sesame.",
+		"Ingredients": [
+			{
+				"SpeciesId": "GoldenTrevally",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			},
+			{
+				"SpeciesId": "",
+				"Category": "ReefFish",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Chop",
+			"Season",
+			"Plate"
+		],
+		"BasePrice": 96,
+		"Difficulty": 0.6,
+		"Tags": [
+			"Raw",
+			"Fancy"
+		],
+		"MinReputation": 2.0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.98,
+			"G": 0.75,
+			"B": 0.3,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "TunaTataki",
+		"DisplayName": "Dogtooth Tataki",
+		"Description": "Seared tuna loin, ruby-red inside.",
+		"Ingredients": [
+			{
+				"SpeciesId": "DogtoothTuna",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Season",
+			"Grill",
+			"Plate"
+		],
+		"BasePrice": 140,
+		"Difficulty": 0.7,
+		"Tags": [
+			"Raw",
+			"Fancy"
+		],
+		"MinReputation": 2.5,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.7,
+			"G": 0.15,
+			"B": 0.2,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "SunscaleFeast",
+		"DisplayName": "Sunscale Feast",
+		"Description": "A legendary grouper roasted whole for the whole dining deck.",
+		"Ingredients": [
+			{
+				"SpeciesId": "SunscaleGrouper",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Season",
+			"Grill",
+			"Simmer",
+			"Plate"
+		],
+		"BasePrice": 420,
+		"Difficulty": 0.85,
+		"Tags": [
+			"Fancy",
+			"Hearty"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 1.0,
+			"G": 0.8,
+			"B": 0.2,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "KelpBassTacos",
+		"DisplayName": "Kelp Bass Tacos",
+		"Description": "Crispy bass with cabbage slaw.",
+		"Ingredients": [
+			{
+				"SpeciesId": "KelpBass",
+				"Category": "",
+				"Count": 2,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Fry",
+			"Chop",
+			"Plate"
+		],
+		"BasePrice": 58,
+		"Difficulty": 0.35,
+		"Tags": [
+			"Fried",
+			"Hearty"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.9,
+			"G": 0.75,
+			"B": 0.4,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "SheepheadStew",
+		"DisplayName": "Sheephead Stew",
+		"Description": "Rich tomato stew with sheephead and fennel.",
+		"Ingredients": [
+			{
+				"SpeciesId": "CaliforniaSheephead",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 0,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Chop",
+			"Simmer",
+			"Plate"
+		],
+		"BasePrice": 70,
+		"Difficulty": 0.45,
+		"Tags": [
+			"Hearty"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.85,
+			"G": 0.3,
+			"B": 0.2,
+			"A": 1.0
+		}
+	},
+	{
+		"Name": "LingcodChowder",
+		"DisplayName": "Lingcod Chowder",
+		"Description": "Creamy chowder with lingcod and potatoes.",
+		"Ingredients": [
+			{
+				"SpeciesId": "Lingcod",
+				"Category": "",
+				"Count": 1,
+				"MinLengthCm": 60,
+				"MinQuality": 0
+			}
+		],
+		"Steps": [
+			"Fillet",
+			"Chop",
+			"Simmer",
+			"Season",
+			"Plate"
+		],
+		"BasePrice": 92,
+		"Difficulty": 0.5,
+		"Tags": [
+			"Hearty",
+			"Fancy"
+		],
+		"MinReputation": 0,
+		"RequiredUpgrade": "",
+		"PlateColor": {
+			"R": 0.95,
+			"G": 0.92,
+			"B": 0.8,
+			"A": 1.0
+		}
+	}
+]

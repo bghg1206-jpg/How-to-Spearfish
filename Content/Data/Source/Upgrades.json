@@ -1,0 +1,154 @@
+[
+	{
+		"Name": "SecondTable",
+		"DisplayName": "Second Dining Table",
+		"Description": "Another table on the foredeck. Two more hungry guests at once.",
+		"Unlock": {
+			"Price": 250,
+			"MinReputation": 1.0,
+			"MinDay": 0,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": ""
+		},
+		"ExtraSeats": 2,
+		"CookZoneBonus": 0,
+		"DishQualityBonus": 0,
+		"PatienceBonus": 0,
+		"AutoChefSkillBonus": 0,
+		"bUnlocksTelemetry": false,
+		"bUnlocksDiverLocator": false
+	},
+	{
+		"Name": "ThirdTable",
+		"DisplayName": "Sunset Bar Seats",
+		"Description": "Two stools at a rail bar facing the sunset.",
+		"Unlock": {
+			"Price": 700,
+			"MinReputation": 3.0,
+			"MinDay": 0,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": "SecondTable"
+		},
+		"ExtraSeats": 2,
+		"CookZoneBonus": 0,
+		"DishQualityBonus": 0,
+		"PatienceBonus": 0,
+		"AutoChefSkillBonus": 0,
+		"bUnlocksTelemetry": false,
+		"bUnlocksDiverLocator": false
+	},
+	{
+		"Name": "LavaGrill",
+		"DisplayName": "Lava-Stone Grill",
+		"Description": "Even heat, wider sweet spot on every grill and fry.",
+		"Unlock": {
+			"Price": 180,
+			"MinReputation": 0.5,
+			"MinDay": 0,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": ""
+		},
+		"ExtraSeats": 0,
+		"CookZoneBonus": 0.06,
+		"DishQualityBonus": 0,
+		"PatienceBonus": 0,
+		"AutoChefSkillBonus": 0,
+		"bUnlocksTelemetry": false,
+		"bUnlocksDiverLocator": false
+	},
+	{
+		"Name": "SpiceRack",
+		"DisplayName": "Island Spice Rack",
+		"Description": "Smoked paprika, lime salt, wild chilli. Everything tastes better.",
+		"Unlock": {
+			"Price": 220,
+			"MinReputation": 1.5,
+			"MinDay": 0,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": ""
+		},
+		"ExtraSeats": 0,
+		"CookZoneBonus": 0,
+		"DishQualityBonus": 0.05,
+		"PatienceBonus": 0,
+		"AutoChefSkillBonus": 0,
+		"bUnlocksTelemetry": false,
+		"bUnlocksDiverLocator": false
+	},
+	{
+		"Name": "ShadyAwning",
+		"DisplayName": "Shady Awning",
+		"Description": "Guests in the shade wait longer without complaining.",
+		"Unlock": {
+			"Price": 200,
+			"MinReputation": 1.0,
+			"MinDay": 0,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": ""
+		},
+		"ExtraSeats": 0,
+		"CookZoneBonus": 0,
+		"DishQualityBonus": 0,
+		"PatienceBonus": 0.15,
+		"AutoChefSkillBonus": 0,
+		"bUnlocksTelemetry": false,
+		"bUnlocksDiverLocator": false
+	},
+	{
+		"Name": "DiveLinkTablet",
+		"DisplayName": "Dive Link Tablet",
+		"Description": "A buoy-relayed link to the diver's gauges: the chef sees air and depth.",
+		"Unlock": {
+			"Price": 300,
+			"MinReputation": 0,
+			"MinDay": 3,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": ""
+		},
+		"ExtraSeats": 0,
+		"CookZoneBonus": 0,
+		"DishQualityBonus": 0,
+		"PatienceBonus": 0,
+		"AutoChefSkillBonus": 0,
+		"bUnlocksTelemetry": true,
+		"bUnlocksDiverLocator": false
+	},
+	{
+		"Name": "BuoyTracker",
+		"DisplayName": "Buoy Tracker",
+		"Description": "GPS buoy on the diver's float line: the chef sees bearing and distance.",
+		"Unlock": {
+			"Price": 650,
+			"MinReputation": 2.5,
+			"MinDay": 0,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": "DiveLinkTablet"
+		},
+		"ExtraSeats": 0,
+		"CookZoneBonus": 0,
+		"DishQualityBonus": 0,
+		"PatienceBonus": 0,
+		"AutoChefSkillBonus": 0,
+		"bUnlocksTelemetry": false,
+		"bUnlocksDiverLocator": true
+	},
+	{
+		"Name": "ApprenticeCook",
+		"DisplayName": "Apprentice Cook",
+		"Description": "Hire Nino from the dock. Helps the automated kitchen when you dive alone.",
+		"Unlock": {
+			"Price": 400,
+			"MinReputation": 1.5,
+			"MinDay": 0,
+			"MinSpeciesCaught": 0,
+			"Prerequisite": ""
+		},
+		"ExtraSeats": 0,
+		"CookZoneBonus": 0,
+		"DishQualityBonus": 0,
+		"PatienceBonus": 0,
+		"AutoChefSkillBonus": 0.12,
+		"bUnlocksTelemetry": false,
+		"bUnlocksDiverLocator": false
+	}
+]

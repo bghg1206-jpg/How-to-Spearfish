@@ -1,0 +1,221 @@
+[
+	{
+		"Name": "ConchShell",
+		"DisplayName": "Queen Conch",
+		"Description": "A pink-lipped conch shell. Tourists go wild for them.",
+		"Category": "Shell",
+		"Rarity": "Common",
+		"BaseValue": 8,
+		"WeightKg": 0.4,
+		"MinDepthM": 0,
+		"MaxDepthM": 15,
+		"Biomes": [
+			"Sand",
+			"Seagrass"
+		],
+		"Color": {
+			"R": 0.98,
+			"G": 0.7,
+			"B": 0.6,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "SpottedCowrie",
+		"DisplayName": "Spotted Cowrie",
+		"Description": "Glossy, speckled and once used as money.",
+		"Category": "Shell",
+		"Rarity": "Uncommon",
+		"BaseValue": 16,
+		"WeightKg": 0.05,
+		"MinDepthM": 4,
+		"MaxDepthM": 25,
+		"Biomes": [
+			"Reef",
+			"Sand"
+		],
+		"Color": {
+			"R": 0.75,
+			"G": 0.55,
+			"B": 0.35,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "WhitePearl",
+		"DisplayName": "White Pearl",
+		"Description": "A lustrous pearl from a giant clam.",
+		"Category": "Pearl",
+		"Rarity": "Uncommon",
+		"BaseValue": 55,
+		"WeightKg": 0.02,
+		"MinDepthM": 6,
+		"MaxDepthM": 40,
+		"Biomes": [
+			"Reef",
+			"Sand"
+		],
+		"Color": {
+			"R": 0.97,
+			"G": 0.97,
+			"B": 0.95,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "BlackPearl",
+		"DisplayName": "Black Pearl",
+		"Description": "Peacock-green sheen over midnight black. Very rare.",
+		"Category": "Pearl",
+		"Rarity": "Rare",
+		"BaseValue": 140,
+		"WeightKg": 0.02,
+		"MinDepthM": 15,
+		"MaxDepthM": 60,
+		"Biomes": [
+			"Reef",
+			"Sand"
+		],
+		"Color": {
+			"R": 0.12,
+			"G": 0.18,
+			"B": 0.15,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "OldCoin",
+		"DisplayName": "Tarnished Coin",
+		"Description": "A green-crusted coin from a long-lost purse.",
+		"Category": "Treasure",
+		"Rarity": "Uncommon",
+		"BaseValue": 35,
+		"WeightKg": 0.05,
+		"MinDepthM": 5,
+		"MaxDepthM": 60,
+		"Biomes": [
+			"Wreck",
+			"Sand"
+		],
+		"Color": {
+			"R": 0.55,
+			"G": 0.6,
+			"B": 0.45,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "GoldDoubloon",
+		"DisplayName": "Gold Doubloon",
+		"Description": "Still shiny after three hundred years. Gold doesn't care about salt.",
+		"Category": "Treasure",
+		"Rarity": "Rare",
+		"BaseValue": 160,
+		"WeightKg": 0.05,
+		"MinDepthM": 12,
+		"MaxDepthM": 60,
+		"Biomes": [
+			"Wreck",
+			"Cave"
+		],
+		"Color": {
+			"R": 1.0,
+			"G": 0.8,
+			"B": 0.2,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "Amphora",
+		"DisplayName": "Clay Amphora",
+		"Description": "An ancient wine jar crusted with barnacles. Heavy.",
+		"Category": "Artifact",
+		"Rarity": "Uncommon",
+		"BaseValue": 75,
+		"WeightKg": 2.2,
+		"MinDepthM": 12,
+		"MaxDepthM": 60,
+		"Biomes": [
+			"Wreck",
+			"Sand"
+		],
+		"Color": {
+			"R": 0.7,
+			"G": 0.4,
+			"B": 0.25,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "CaptainsCompass",
+		"DisplayName": "Captain's Compass",
+		"Description": "A brass compass that still points... somewhere.",
+		"Category": "Artifact",
+		"Rarity": "Epic",
+		"BaseValue": 280,
+		"WeightKg": 0.4,
+		"MinDepthM": 20,
+		"MaxDepthM": 60,
+		"Biomes": [
+			"Wreck"
+		],
+		"Color": {
+			"R": 0.85,
+			"G": 0.65,
+			"B": 0.3,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "BrassPorthole",
+		"DisplayName": "Brass Porthole",
+		"Description": "Salvage from a wreck. Restaurants love these as decor.",
+		"Category": "Salvage",
+		"Rarity": "Common",
+		"BaseValue": 45,
+		"WeightKg": 3.0,
+		"MinDepthM": 8,
+		"MaxDepthM": 60,
+		"Biomes": [
+			"Wreck"
+		],
+		"Color": {
+			"R": 0.75,
+			"G": 0.6,
+			"B": 0.3,
+			"A": 1.0
+		},
+		"Mesh": ""
+	},
+	{
+		"Name": "MessageInABottle",
+		"DisplayName": "Message in a Bottle",
+		"Description": "A corked bottle with a soggy note. Might be a map. Might be a shopping list.",
+		"Category": "Curiosity",
+		"Rarity": "Uncommon",
+		"BaseValue": 12,
+		"WeightKg": 0.5,
+		"MinDepthM": 0,
+		"MaxDepthM": 30,
+		"Biomes": [
+			"Sand",
+			"OpenWater",
+			"Seagrass"
+		],
+		"Color": {
+			"R": 0.4,
+			"G": 0.7,
+			"B": 0.5,
+			"A": 1.0
+		},
+		"Mesh": ""
+	}
+]

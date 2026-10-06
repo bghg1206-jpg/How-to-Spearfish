@@ -1,0 +1,1209 @@
+[
+	{
+		"Name": "BluestripeSnapper",
+		"DisplayName": "Bluestripe Snapper",
+		"Description": "Bright yellow snapper with electric-blue racing stripes. Travels in nervous schools along the reef edge.",
+		"Rarity": "Common",
+		"Archetype": "Schooler",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 3,
+		"MaxDepthM": 18,
+		"Biomes": [
+			"Reef",
+			"Seagrass"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 25,
+		"MaxLengthCm": 48,
+		"WeightCoef": 13,
+		"ValuePerKg": 10,
+		"Behavior": {
+			"CruiseSpeedCm": 140,
+			"BurstSpeedCm": 520,
+			"TurnRateDeg": 200,
+			"DetectionRadiusCm": 700,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 6,
+			"SchoolSizeMax": 10,
+			"Strength": 150,
+			"Stamina": 5,
+			"FightSeconds": 4,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 5,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Oval",
+			"PrimaryColor": {
+				"R": 0.95,
+				"G": 0.78,
+				"B": 0.15,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.15,
+				"G": 0.45,
+				"B": 0.95,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.34,
+			"BodyWidth": 0.13,
+			"TailBeatHz": 2.6
+		},
+		"FunFact": "When one snapper spooks, the whole school bolts. Approach slowly from below."
+	},
+	{
+		"Name": "YellowtailJack",
+		"DisplayName": "Yellowtail Jack",
+		"Description": "Muscular silver jack with a golden tail. Patrols open water in fast, curious packs.",
+		"Rarity": "Common",
+		"Archetype": "Schooler",
+		"Category": "Pelagic",
+		"bCatchable": true,
+		"MinDepthM": 2,
+		"MaxDepthM": 16,
+		"Biomes": [
+			"OpenWater",
+			"Reef"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 30,
+		"MaxLengthCm": 65,
+		"WeightCoef": 14,
+		"ValuePerKg": 11,
+		"Behavior": {
+			"CruiseSpeedCm": 220,
+			"BurstSpeedCm": 760,
+			"TurnRateDeg": 170,
+			"DetectionRadiusCm": 850,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 5,
+			"SchoolSizeMax": 9,
+			"Strength": 260,
+			"Stamina": 7,
+			"FightSeconds": 6,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 4,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Torpedo",
+			"PrimaryColor": {
+				"R": 0.75,
+				"G": 0.8,
+				"B": 0.85,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.95,
+				"G": 0.8,
+				"B": 0.2,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.28,
+			"BodyWidth": 0.12,
+			"TailBeatHz": 3.0
+		},
+		"FunFact": "Jacks often circle back to inspect a diver who stays perfectly still."
+	},
+	{
+		"Name": "RainbowParrotfish",
+		"DisplayName": "Rainbow Parrotfish",
+		"Description": "Beaked reef grazer in teal, green and coral pink. You can hear it crunching coral.",
+		"Rarity": "Common",
+		"Archetype": "Reef",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 1,
+		"MaxDepthM": 14,
+		"Biomes": [
+			"Reef"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 25,
+		"MaxLengthCm": 60,
+		"WeightCoef": 15,
+		"ValuePerKg": 8,
+		"Behavior": {
+			"CruiseSpeedCm": 110,
+			"BurstSpeedCm": 420,
+			"TurnRateDeg": 150,
+			"DetectionRadiusCm": 600,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 180,
+			"Stamina": 6,
+			"FightSeconds": 5,
+			"bSeeksCover": true,
+			"CalmDownSeconds": 6,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Oval",
+			"PrimaryColor": {
+				"R": 0.1,
+				"G": 0.75,
+				"B": 0.6,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.95,
+				"G": 0.45,
+				"B": 0.55,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.36,
+			"BodyWidth": 0.15,
+			"TailBeatHz": 2.0
+		},
+		"FunFact": "Most of the white sand around the reef was once coral eaten by parrotfish."
+	},
+	{
+		"Name": "RedHogfish",
+		"DisplayName": "Red Hogfish",
+		"Description": "Pig-snouted wrasse that roots through the sand for crabs. Prized by chefs for sweet white meat.",
+		"Rarity": "Uncommon",
+		"Archetype": "Reef",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 6,
+		"MaxDepthM": 22,
+		"Biomes": [
+			"Sand",
+			"Seagrass"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 30,
+		"MaxLengthCm": 62,
+		"WeightCoef": 16,
+		"ValuePerKg": 17,
+		"Behavior": {
+			"CruiseSpeedCm": 90,
+			"BurstSpeedCm": 380,
+			"TurnRateDeg": 140,
+			"DetectionRadiusCm": 500,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 170,
+			"Stamina": 6,
+			"FightSeconds": 5,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 7,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Oval",
+			"PrimaryColor": {
+				"R": 0.9,
+				"G": 0.35,
+				"B": 0.3,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.98,
+				"G": 0.75,
+				"B": 0.65,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.4,
+			"BodyWidth": 0.14,
+			"TailBeatHz": 1.8
+		},
+		"FunFact": "Hogfish change colour to match their mood - and the bottom they rest on."
+	},
+	{
+		"Name": "CoralLionfish",
+		"DisplayName": "Coral Lionfish",
+		"Description": "Venomous, slow and fearless. An invasive menace on the reef and a favourite of fritter lovers.",
+		"Rarity": "Common",
+		"Archetype": "Reef",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 2,
+		"MaxDepthM": 30,
+		"Biomes": [
+			"Reef",
+			"Cave",
+			"Wreck"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 18,
+		"MaxLengthCm": 38,
+		"WeightCoef": 14,
+		"ValuePerKg": 15,
+		"Behavior": {
+			"CruiseSpeedCm": 50,
+			"BurstSpeedCm": 200,
+			"TurnRateDeg": 90,
+			"DetectionRadiusCm": 250,
+			"LightSensitivity": -0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 60,
+			"Stamina": 3,
+			"FightSeconds": 2,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 2,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Spiny",
+			"PrimaryColor": {
+				"R": 0.85,
+				"G": 0.3,
+				"B": 0.2,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.98,
+				"G": 0.95,
+				"B": 0.9,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.38,
+			"BodyWidth": 0.12,
+			"TailBeatHz": 1.2
+		},
+		"FunFact": "Lionfish barely flee - their spines do the talking. Mind your fingers when bagging."
+	},
+	{
+		"Name": "SpeckledGrouper",
+		"DisplayName": "Speckled Grouper",
+		"Description": "Heavy-shouldered ambusher that lurks in caves and coral heads. Explodes for its hole when shot.",
+		"Rarity": "Uncommon",
+		"Archetype": "Ambusher",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 8,
+		"MaxDepthM": 28,
+		"Biomes": [
+			"Cave",
+			"Reef",
+			"Wreck"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 40,
+		"MaxLengthCm": 95,
+		"WeightCoef": 17,
+		"ValuePerKg": 15,
+		"Behavior": {
+			"CruiseSpeedCm": 70,
+			"BurstSpeedCm": 560,
+			"TurnRateDeg": 150,
+			"DetectionRadiusCm": 550,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 380,
+			"Stamina": 10,
+			"FightSeconds": 8,
+			"bSeeksCover": true,
+			"CalmDownSeconds": 8,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Bulky",
+			"PrimaryColor": {
+				"R": 0.45,
+				"G": 0.35,
+				"B": 0.25,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.75,
+				"G": 0.65,
+				"B": 0.45,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.36,
+			"BodyWidth": 0.2,
+			"TailBeatHz": 1.6
+		},
+		"FunFact": "A grouper that reaches its cave will wedge itself in with flared gills. Shoot carefully."
+	},
+	{
+		"Name": "SilverBarracuda",
+		"DisplayName": "Silver Barracuda",
+		"Description": "Toothy, glinting and endlessly curious. Hovers just out of range, then vanishes in a blink.",
+		"Rarity": "Uncommon",
+		"Archetype": "Pelagic",
+		"Category": "Pelagic",
+		"bCatchable": true,
+		"MinDepthM": 3,
+		"MaxDepthM": 25,
+		"Biomes": [
+			"OpenWater",
+			"Reef"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 60,
+		"MaxLengthCm": 130,
+		"WeightCoef": 7,
+		"ValuePerKg": 9,
+		"Behavior": {
+			"CruiseSpeedCm": 120,
+			"BurstSpeedCm": 920,
+			"TurnRateDeg": 180,
+			"DetectionRadiusCm": 900,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 320,
+			"Stamina": 8,
+			"FightSeconds": 7,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 4,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": true
+		},
+		"Visual": {
+			"BodyPlan": "Torpedo",
+			"PrimaryColor": {
+				"R": 0.7,
+				"G": 0.75,
+				"B": 0.8,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.2,
+				"G": 0.25,
+				"B": 0.3,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.14,
+			"BodyWidth": 0.08,
+			"TailBeatHz": 2.4
+		},
+		"FunFact": "Barracuda follow divers out of curiosity. Stay still and one may drift into range."
+	},
+	{
+		"Name": "MahiMahi",
+		"DisplayName": "Mahi-Mahi",
+		"Description": "Neon blue-green surface sprinter. Often found shading under floating objects - like your boat.",
+		"Rarity": "Uncommon",
+		"Archetype": "Pelagic",
+		"Category": "Pelagic",
+		"bCatchable": true,
+		"MinDepthM": 0.5,
+		"MaxDepthM": 12,
+		"Biomes": [
+			"OpenWater"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 60,
+		"MaxLengthCm": 120,
+		"WeightCoef": 10,
+		"ValuePerKg": 16,
+		"Behavior": {
+			"CruiseSpeedCm": 240,
+			"BurstSpeedCm": 880,
+			"TurnRateDeg": 170,
+			"DetectionRadiusCm": 900,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 3,
+			"Strength": 340,
+			"Stamina": 9,
+			"FightSeconds": 8,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 4,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Torpedo",
+			"PrimaryColor": {
+				"R": 0.15,
+				"G": 0.75,
+				"B": 0.55,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.95,
+				"G": 0.85,
+				"B": 0.2,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.3,
+			"BodyWidth": 0.1,
+			"TailBeatHz": 3.2
+		},
+		"FunFact": "Mahi-mahi lose their dazzling colours within minutes of leaving the water."
+	},
+	{
+		"Name": "GoldenTrevally",
+		"DisplayName": "Golden Trevally",
+		"Description": "Gold-barred trevally that shadows rays and sharks, snatching whatever they flush.",
+		"Rarity": "Rare",
+		"Archetype": "Pelagic",
+		"Category": "Pelagic",
+		"bCatchable": true,
+		"MinDepthM": 8,
+		"MaxDepthM": 30,
+		"Biomes": [
+			"Reef",
+			"Sand",
+			"OpenWater"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 50,
+		"MaxLengthCm": 95,
+		"WeightCoef": 16,
+		"ValuePerKg": 20,
+		"Behavior": {
+			"CruiseSpeedCm": 200,
+			"BurstSpeedCm": 780,
+			"TurnRateDeg": 170,
+			"DetectionRadiusCm": 850,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 2,
+			"SchoolSizeMax": 4,
+			"Strength": 380,
+			"Stamina": 9,
+			"FightSeconds": 8,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 4,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Torpedo",
+			"PrimaryColor": {
+				"R": 0.95,
+				"G": 0.75,
+				"B": 0.25,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.25,
+				"G": 0.25,
+				"B": 0.25,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.34,
+			"BodyWidth": 0.12,
+			"TailBeatHz": 2.8
+		},
+		"FunFact": "Juvenile golden trevally 'pilot' in front of sharks - and get away with it."
+	},
+	{
+		"Name": "MidnightSquirrelfish",
+		"DisplayName": "Midnight Squirrelfish",
+		"Description": "Big-eyed crimson fish that crowds cave ceilings by day and scatters at the first beam of light.",
+		"Rarity": "Uncommon",
+		"Archetype": "Reef",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 5,
+		"MaxDepthM": 30,
+		"Biomes": [
+			"Cave",
+			"Wreck"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 15,
+		"MaxLengthCm": 30,
+		"WeightCoef": 15,
+		"ValuePerKg": 22,
+		"Behavior": {
+			"CruiseSpeedCm": 80,
+			"BurstSpeedCm": 400,
+			"TurnRateDeg": 220,
+			"DetectionRadiusCm": 500,
+			"LightSensitivity": 0.9,
+			"SchoolSizeMin": 3,
+			"SchoolSizeMax": 6,
+			"Strength": 70,
+			"Stamina": 3,
+			"FightSeconds": 3,
+			"bSeeksCover": true,
+			"CalmDownSeconds": 6,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Oval",
+			"PrimaryColor": {
+				"R": 0.85,
+				"G": 0.12,
+				"B": 0.15,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.95,
+				"G": 0.85,
+				"B": 0.85,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.36,
+			"BodyWidth": 0.13,
+			"TailBeatHz": 3.0
+		},
+		"FunFact": "Turn your light off and wait - squirrelfish creep back out of the dark."
+	},
+	{
+		"Name": "DogtoothTuna",
+		"DisplayName": "Dogtooth Tuna",
+		"Description": "A torpedo of muscle that cruises the drop-off. Hook one and it will tow you into the blue.",
+		"Rarity": "Rare",
+		"Archetype": "Pelagic",
+		"Category": "Pelagic",
+		"bCatchable": true,
+		"MinDepthM": 18,
+		"MaxDepthM": 48,
+		"Biomes": [
+			"OpenWater",
+			"Wall"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 80,
+		"MaxLengthCm": 150,
+		"WeightCoef": 18,
+		"ValuePerKg": 22,
+		"Behavior": {
+			"CruiseSpeedCm": 260,
+			"BurstSpeedCm": 980,
+			"TurnRateDeg": 140,
+			"DetectionRadiusCm": 1100,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 3,
+			"Strength": 640,
+			"Stamina": 16,
+			"FightSeconds": 14,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 4,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Torpedo",
+			"PrimaryColor": {
+				"R": 0.2,
+				"G": 0.3,
+				"B": 0.45,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.8,
+				"G": 0.82,
+				"B": 0.85,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.3,
+			"BodyWidth": 0.16,
+			"TailBeatHz": 3.4
+		},
+		"FunFact": "Dogtooth tuna can strip a cheap reel in seconds. Respect the drag."
+	},
+	{
+		"Name": "SunscaleGrouper",
+		"DisplayName": "Sunscale Grouper",
+		"Description": "A legendary golden grouper said to guard the old wreck. Few believe it exists. Fewer have landed it.",
+		"Rarity": "Legendary",
+		"Archetype": "Ambusher",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 18,
+		"MaxDepthM": 45,
+		"Biomes": [
+			"Wreck",
+			"Cave"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 140,
+		"MaxLengthCm": 200,
+		"WeightCoef": 17,
+		"ValuePerKg": 26,
+		"Behavior": {
+			"CruiseSpeedCm": 60,
+			"BurstSpeedCm": 620,
+			"TurnRateDeg": 120,
+			"DetectionRadiusCm": 700,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 900,
+			"Stamina": 28,
+			"FightSeconds": 20,
+			"bSeeksCover": true,
+			"CalmDownSeconds": 10,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Bulky",
+			"PrimaryColor": {
+				"R": 0.98,
+				"G": 0.72,
+				"B": 0.12,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.6,
+				"G": 0.35,
+				"B": 0.05,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.38,
+			"BodyWidth": 0.22,
+			"TailBeatHz": 1.2
+		},
+		"FunFact": "Its scales were once traded as coins on Pelican Key."
+	},
+	{
+		"Name": "BlacktipReefShark",
+		"DisplayName": "Blacktip Reef Shark",
+		"Description": "Sleek reef shark with ink-dipped fins. Mostly shy - until something struggles on a line.",
+		"Rarity": "Uncommon",
+		"Archetype": "Predator",
+		"Category": "Hazard",
+		"bCatchable": false,
+		"MinDepthM": 3,
+		"MaxDepthM": 32,
+		"Biomes": [
+			"Reef",
+			"OpenWater",
+			"Sand"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 120,
+		"MaxLengthCm": 180,
+		"WeightCoef": 9,
+		"ValuePerKg": 0,
+		"Behavior": {
+			"CruiseSpeedCm": 180,
+			"BurstSpeedCm": 720,
+			"TurnRateDeg": 110,
+			"DetectionRadiusCm": 1400,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 900,
+			"Stamina": 20,
+			"FightSeconds": 5,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 6,
+			"AttackShock": 40,
+			"AttackRadiusCm": 220,
+			"HuntRadiusCm": 1600,
+			"PreyCategories": [
+				"ReefFish",
+				"Pelagic"
+			],
+			"bAttractedByStruggle": true,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Shark",
+			"PrimaryColor": {
+				"R": 0.5,
+				"G": 0.52,
+				"B": 0.55,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.9,
+				"G": 0.9,
+				"B": 0.9,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.18,
+			"BodyWidth": 0.14,
+			"TailBeatHz": 1.4
+		},
+		"FunFact": "Blacktips will happily steal a struggling fish right off your spear."
+	},
+	{
+		"Name": "GreenMoray",
+		"DisplayName": "Green Moray",
+		"Description": "A grumpy eel that lives in reef crevices. Gapes constantly. Do not put your hand in its house.",
+		"Rarity": "Common",
+		"Archetype": "Ambusher",
+		"Category": "Hazard",
+		"bCatchable": false,
+		"MinDepthM": 4,
+		"MaxDepthM": 25,
+		"Biomes": [
+			"Reef",
+			"Cave",
+			"Wreck"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 90,
+		"MaxLengthCm": 160,
+		"WeightCoef": 4,
+		"ValuePerKg": 0,
+		"Behavior": {
+			"CruiseSpeedCm": 60,
+			"BurstSpeedCm": 500,
+			"TurnRateDeg": 200,
+			"DetectionRadiusCm": 300,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 400,
+			"Stamina": 10,
+			"FightSeconds": 5,
+			"bSeeksCover": true,
+			"CalmDownSeconds": 6,
+			"AttackShock": 25,
+			"AttackRadiusCm": 170,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Eel",
+			"PrimaryColor": {
+				"R": 0.25,
+				"G": 0.45,
+				"B": 0.15,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.55,
+				"G": 0.65,
+				"B": 0.2,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.1,
+			"BodyWidth": 0.08,
+			"TailBeatHz": 1.5
+		},
+		"FunFact": "Morays 'gape' to breathe, not to threaten. Mostly."
+	},
+	{
+		"Name": "MoonJellyfish",
+		"DisplayName": "Moon Jellyfish",
+		"Description": "Translucent drifting bell. Pretty, mindless and surprisingly stingy.",
+		"Rarity": "Common",
+		"Archetype": "Drifter",
+		"Category": "Hazard",
+		"bCatchable": false,
+		"MinDepthM": 0.5,
+		"MaxDepthM": 20,
+		"Biomes": [
+			"OpenWater"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 20,
+		"MaxLengthCm": 40,
+		"WeightCoef": 2,
+		"ValuePerKg": 0,
+		"Behavior": {
+			"CruiseSpeedCm": 20,
+			"BurstSpeedCm": 30,
+			"TurnRateDeg": 20,
+			"DetectionRadiusCm": 0,
+			"LightSensitivity": 0,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 0,
+			"Stamina": 1,
+			"FightSeconds": 5,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 5,
+			"AttackShock": 10,
+			"AttackRadiusCm": 60,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Bell",
+			"PrimaryColor": {
+				"R": 0.75,
+				"G": 0.8,
+				"B": 0.95,
+				"A": 0.6
+			},
+			"SecondaryColor": {
+				"R": 0.95,
+				"G": 0.7,
+				"B": 0.85,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.6,
+			"BodyWidth": 0.6,
+			"TailBeatHz": 0.6
+		},
+		"FunFact": "A jellyfish has no brain, heart or bones - just excellent timing."
+	},
+	{
+		"Name": "SouthernStingray",
+		"DisplayName": "Southern Stingray",
+		"Description": "Glides over the sand like a living kite. Harmless unless you corner it.",
+		"Rarity": "Uncommon",
+		"Archetype": "Ray",
+		"Category": "Hazard",
+		"bCatchable": false,
+		"MinDepthM": 3,
+		"MaxDepthM": 20,
+		"Biomes": [
+			"Sand",
+			"Seagrass"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 80,
+		"MaxLengthCm": 140,
+		"WeightCoef": 6,
+		"ValuePerKg": 0,
+		"Behavior": {
+			"CruiseSpeedCm": 90,
+			"BurstSpeedCm": 420,
+			"TurnRateDeg": 90,
+			"DetectionRadiusCm": 450,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 500,
+			"Stamina": 12,
+			"FightSeconds": 5,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 6,
+			"AttackShock": 20,
+			"AttackRadiusCm": 120,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Disc",
+			"PrimaryColor": {
+				"R": 0.45,
+				"G": 0.4,
+				"B": 0.35,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.9,
+				"G": 0.88,
+				"B": 0.85,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.08,
+			"BodyWidth": 0.7,
+			"TailBeatHz": 0.8
+		},
+		"FunFact": "Golden trevally love following rays to snap up whatever they stir from the sand."
+	},
+	{
+		"Name": "KelpBass",
+		"DisplayName": "Kelp Bass",
+		"Description": "Mottled bass that hangs motionless in the kelp canopy, then strikes.",
+		"Rarity": "Common",
+		"Archetype": "Reef",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 2,
+		"MaxDepthM": 20,
+		"Biomes": [
+			"Kelp",
+			"Reef"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 25,
+		"MaxLengthCm": 60,
+		"WeightCoef": 15,
+		"ValuePerKg": 11,
+		"Behavior": {
+			"CruiseSpeedCm": 100,
+			"BurstSpeedCm": 480,
+			"TurnRateDeg": 160,
+			"DetectionRadiusCm": 600,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 200,
+			"Stamina": 6,
+			"FightSeconds": 5,
+			"bSeeksCover": true,
+			"CalmDownSeconds": 5,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Oval",
+			"PrimaryColor": {
+				"R": 0.4,
+				"G": 0.42,
+				"B": 0.3,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.85,
+				"G": 0.85,
+				"B": 0.7,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.32,
+			"BodyWidth": 0.14,
+			"TailBeatHz": 2.0
+		},
+		"FunFact": "Kelp bass can live for over thirty years."
+	},
+	{
+		"Name": "CaliforniaSheephead",
+		"DisplayName": "Sheephead",
+		"Description": "Black-and-red wrasse with buck teeth built for crunching urchins.",
+		"Rarity": "Uncommon",
+		"Archetype": "Reef",
+		"Category": "ReefFish",
+		"bCatchable": true,
+		"MinDepthM": 4,
+		"MaxDepthM": 26,
+		"Biomes": [
+			"Kelp",
+			"Reef",
+			"Sand"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 30,
+		"MaxLengthCm": 80,
+		"WeightCoef": 15,
+		"ValuePerKg": 14,
+		"Behavior": {
+			"CruiseSpeedCm": 90,
+			"BurstSpeedCm": 420,
+			"TurnRateDeg": 160,
+			"DetectionRadiusCm": 550,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 260,
+			"Stamina": 7,
+			"FightSeconds": 6,
+			"bSeeksCover": false,
+			"CalmDownSeconds": 5,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Bulky",
+			"PrimaryColor": {
+				"R": 0.15,
+				"G": 0.12,
+				"B": 0.12,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.85,
+				"G": 0.3,
+				"B": 0.3,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.36,
+			"BodyWidth": 0.16,
+			"TailBeatHz": 1.7
+		},
+		"FunFact": "Every sheephead starts life female."
+	},
+	{
+		"Name": "Lingcod",
+		"DisplayName": "Lingcod",
+		"Description": "Big-mouthed ambusher of the rocky reef. Blue-green flesh that turns snow white when cooked.",
+		"Rarity": "Uncommon",
+		"Archetype": "Ambusher",
+		"Category": "Bottom",
+		"bCatchable": true,
+		"MinDepthM": 10,
+		"MaxDepthM": 40,
+		"Biomes": [
+			"Reef",
+			"Wall",
+			"Kelp"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 50,
+		"MaxLengthCm": 110,
+		"WeightCoef": 10,
+		"ValuePerKg": 16,
+		"Behavior": {
+			"CruiseSpeedCm": 70,
+			"BurstSpeedCm": 560,
+			"TurnRateDeg": 160,
+			"DetectionRadiusCm": 500,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 420,
+			"Stamina": 11,
+			"FightSeconds": 9,
+			"bSeeksCover": true,
+			"CalmDownSeconds": 8,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Bulky",
+			"PrimaryColor": {
+				"R": 0.35,
+				"G": 0.4,
+				"B": 0.3,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.6,
+				"G": 0.65,
+				"B": 0.45,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.26,
+			"BodyWidth": 0.18,
+			"TailBeatHz": 1.6
+		},
+		"FunFact": "Lingcod are neither ling nor cod."
+	},
+	{
+		"Name": "GiantSeaBass",
+		"DisplayName": "Giant Black Sea Bass",
+		"Description": "A gentle colossus of the kelp forest. Legend says it remembers every diver it has met.",
+		"Rarity": "Legendary",
+		"Archetype": "Ambusher",
+		"Category": "Bottom",
+		"bCatchable": true,
+		"MinDepthM": 20,
+		"MaxDepthM": 48,
+		"Biomes": [
+			"Kelp",
+			"Wall"
+		],
+		"Activity": "Any",
+		"MinLengthCm": 150,
+		"MaxLengthCm": 220,
+		"WeightCoef": 16,
+		"ValuePerKg": 24,
+		"Behavior": {
+			"CruiseSpeedCm": 60,
+			"BurstSpeedCm": 520,
+			"TurnRateDeg": 160,
+			"DetectionRadiusCm": 800,
+			"LightSensitivity": 0.3,
+			"SchoolSizeMin": 1,
+			"SchoolSizeMax": 1,
+			"Strength": 1000,
+			"Stamina": 30,
+			"FightSeconds": 22,
+			"bSeeksCover": true,
+			"CalmDownSeconds": 10,
+			"AttackShock": 0,
+			"AttackRadiusCm": 0,
+			"HuntRadiusCm": 0,
+			"PreyCategories": [],
+			"bAttractedByStruggle": false,
+			"bCurious": false
+		},
+		"Visual": {
+			"BodyPlan": "Bulky",
+			"PrimaryColor": {
+				"R": 0.12,
+				"G": 0.12,
+				"B": 0.14,
+				"A": 1.0
+			},
+			"SecondaryColor": {
+				"R": 0.35,
+				"G": 0.35,
+				"B": 0.4,
+				"A": 1.0
+			},
+			"Mesh": "",
+			"BodyDepth": 0.36,
+			"BodyWidth": 0.22,
+			"TailBeatHz": 1.0
+		},
+		"FunFact": "Giant sea bass can live to 75 and weigh as much as a piano."
+	}
+]

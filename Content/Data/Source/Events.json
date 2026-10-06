@@ -1,0 +1,68 @@
+[
+	{
+		"Name": "SunscaleSighting",
+		"DisplayName": "Golden Shadow",
+		"Type": "LegendaryVisitor",
+		"Chance": 0.14,
+		"MinDay": 3,
+		"SpeciesId": "SunscaleGrouper",
+		"LootId": "",
+		"Count": 1,
+		"Rumor": "An old fisherman swears he saw a golden grouper the size of a dinghy near the wreck."
+	},
+	{
+		"Name": "GiantBassSighting",
+		"DisplayName": "The Old One",
+		"Type": "LegendaryVisitor",
+		"Chance": 0.12,
+		"MinDay": 2,
+		"SpeciesId": "GiantSeaBass",
+		"LootId": "",
+		"Count": 1,
+		"Rumor": "Kids on the dock say a black sea bass bigger than a car lives under the deepest kelp."
+	},
+	{
+		"Name": "StormTreasure",
+		"DisplayName": "Storm Spill",
+		"Type": "TreasureCache",
+		"Chance": 0.25,
+		"MinDay": 2,
+		"SpeciesId": "",
+		"LootId": "GoldDoubloon",
+		"Count": 3,
+		"Rumor": "Last night's storm tore something loose. People say there's a chest in one of the caves."
+	},
+	{
+		"Name": "CriticVisit",
+		"DisplayName": "Critic in Town",
+		"Type": "CriticVisit",
+		"Chance": 0.15,
+		"MinDay": 4,
+		"SpeciesId": "",
+		"LootId": "",
+		"Count": 1,
+		"Rumor": "Word is a famous food critic is touring the islands this week. Better cook well."
+	},
+	{
+		"Name": "BaitBall",
+		"DisplayName": "Bait Ball",
+		"Type": "BaitBall",
+		"Chance": 0.2,
+		"MinDay": 2,
+		"SpeciesId": "YellowtailJack",
+		"LootId": "",
+		"Count": 3,
+		"Rumor": "Birds are diving like crazy out past the reef - something's stirring up the water."
+	},
+	{
+		"Name": "TrevallyRun",
+		"DisplayName": "Trevally Run",
+		"Type": "SpeciesBloom",
+		"Chance": 0.15,
+		"MinDay": 3,
+		"SpeciesId": "GoldenTrevally",
+		"LootId": "",
+		"Count": 3,
+		"Rumor": "The golden trevally are running! The rays must be feeding on the sand flats."
+	}
+]
