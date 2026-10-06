@@ -1,0 +1,54 @@
+# --- Unreal Engine generated / local-only ---
+Binaries/
+Intermediate/
+Saved/
+DerivedDataCache/
+Build/
+!Build/*.ini
+Plugins/**/Binaries/
+Plugins/**/Intermediate/
+
+# IDE / solution files are regenerated per machine
+.vs/
+.vscode/
+.idea/
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+*.xcworkspace
+*.xcodeproj
+Makefile
+CMakeLists.txt
+!Tools/**/CMakeLists.txt
+compile_commands.json
+.ignore
+
+# Cooked / packaged output
+Packaged/
+Releases/
+*.pak
+*.ucas
+*.utoc
+
+# Native tooling output (Tools/NativeCheck)
+Tools/NativeCheck/.build/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Secrets / local configuration — never commit credentials
+*.env
+.env*
+Config/*.local.ini
+Config/Secrets*.ini
+*.pem
+*.p12
