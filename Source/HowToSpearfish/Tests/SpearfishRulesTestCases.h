@@ -10,6 +10,7 @@
 #include "Rules/CookingRules.h"
 #include "Rules/DayRules.h"
 #include "Rules/EconomyRules.h"
+#include "Rules/EventRules.h"
 #include "Rules/FishRules.h"
 #include "Rules/InventoryRules.h"
 #include "Rules/LineRules.h"
@@ -861,6 +862,61 @@ namespace SpearfishRulesTests
 		SF_CHECK(T, MaxStep < 200.f);
 	}
 
+	// ------------------------------------------------------------------------------------- Events
+
+	inline void EventsRespectDayCapAndGroups(FSpearfishRulesTestContext& T)
+	{
+		TArray<FSpearfishEventCandidate> Candidates;
+		Candidates.Add({ FName(TEXT("Legend1")), 1.f, 3, 1 });
+		Candidates.Add({ FName(TEXT("Legend2")), 1.f, 1, 1 });
+		Candidates.Add({ FName(TEXT("Treasure")), 1.f, 2, 2 });
+		Candidates.Add({ FName(TEXT("Never")), 0.f, 1, 3 });
+		Candidates.Add({ FName(TEXT("Bloom")), 1.f, 1, 4 });
+
+		// Deterministic per seed.
+		SF_CHECK(T, SpearfishEventRules::RollDailyEvents(Candidates, 5, 77) == SpearfishEventRules::RollDailyEvents(Candidates, 5, 77));
+
+		for (int32 Seed = 1; Seed <= 200; ++Seed)
+		{
+			const TArray<FName> Day1 = SpearfishEventRules::RollDailyEvents(Candidates, 1, Seed, 4);
+			// MinDay gates: on day 1 only Legend2 and Bloom are eligible.
+			SF_CHECK(T, !Day1.Contains(FName(TEXT("Legend1"))) && !Day1.Contains(FName(TEXT("Treasure"))));
+			SF_CHECK(T, Day1.Num() == 2);
+
+			const TArray<FName> Day9 = SpearfishEventRules::RollDailyEvents(Candidates, 9, Seed, 2);
+			SF_CHECK(T, Day9.Num() == 2);
+			SF_CHECK(T, !Day9.Contains(FName(TEXT("Never"))));
+			// At most one legendary visitor per day.
+			SF_CHECK(T, !(Day9.Contains(FName(TEXT("Legend1"))) && Day9.Contains(FName(TEXT("Legend2")))));
+
+			const TArray<FName> Wide = SpearfishEventRules::RollDailyEvents(Candidates, 9, Seed, 10);
+			SF_CHECK(T, Wide.Num() == 3);
+		}
+		SF_CHECK(T, SpearfishEventRules::RollDailyEvents(Candidates, 9, 5, 0).Num() == 0);
+	}
+
+	inline void EventsFireAtTheirChance(FSpearfishRulesTestContext& T)
+	{
+		TArray<FSpearfishEventCandidate> Candidates;
+		Candidates.Add({ FName(TEXT("A")), 0.15f, 1, 1 });
+		Candidates.Add({ FName(TEXT("B")), 0.25f, 1, 2 });
+		Candidates.Add({ FName(TEXT("C")), 0.10f, 1, 3 });
+		int32 CountA = 0;
+		int32 CountB = 0;
+		int32 CountC = 0;
+		const int32 Days = 4000;
+		for (int32 Seed = 0; Seed < Days; ++Seed)
+		{
+			const TArray<FName> Events = SpearfishEventRules::RollDailyEvents(Candidates, 10, Seed * 7919 + 13, 3);
+			CountA += Events.Contains(FName(TEXT("A"))) ? 1 : 0;
+			CountB += Events.Contains(FName(TEXT("B"))) ? 1 : 0;
+			CountC += Events.Contains(FName(TEXT("C"))) ? 1 : 0;
+		}
+		SF_CHECK_NEAR(T, static_cast<float>(CountA) / Days, 0.15f, 0.03f);
+		SF_CHECK_NEAR(T, static_cast<float>(CountB) / Days, 0.25f, 0.03f);
+		SF_CHECK_NEAR(T, static_cast<float>(CountC) / Days, 0.10f, 0.03f);
+	}
+
 	struct FCase
 	{
 		const TCHAR* Name;
@@ -901,6 +957,8 @@ namespace SpearfishRulesTests
 		Cases.Add({ TEXT("Fish.Mind"), &FishMindDecisions });
 		Cases.Add({ TEXT("Terrain.Deterministic"), &TerrainIsDeterministic });
 		Cases.Add({ TEXT("Terrain.Playable"), &TerrainLayoutIsPlayable });
+		Cases.Add({ TEXT("Events.DayCapGroups"), &EventsRespectDayCapAndGroups });
+		Cases.Add({ TEXT("Events.Chance"), &EventsFireAtTheirChance });
 		return Cases;
 	}
 }

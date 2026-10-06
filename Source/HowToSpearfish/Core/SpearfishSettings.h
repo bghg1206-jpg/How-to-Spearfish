@@ -146,11 +146,11 @@ public:
 	TSoftObjectPtr<UMaterialInterface> UnderwaterPostProcessMaterial;
 
 	// --- Development ------------------------------------------------------------------------
-	/** Play-In-Editor skips the main menu and starts a session directly. */
+	/** Play-In-Editor skips the main menu and starts a session directly (solo when standalone, co-op as listen server). */
 	UPROPERTY(config, EditAnywhere, Category = "Development")
 	bool bAutoStartSessionInPIE = true;
 
-	/** When auto-starting in PIE: co-op rules (listen server) instead of solo. */
+	/** Standalone PIE uses the co-op rules and save slot (one player plus the auto-chef) instead of solo. */
 	UPROPERTY(config, EditAnywhere, Category = "Development")
 	bool bPIEStartsCoop = false;
 

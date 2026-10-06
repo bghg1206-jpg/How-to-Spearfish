@@ -33,6 +33,8 @@ ASpearfishCharacter::ASpearfishCharacter(const FObjectInitializer& ObjectInitial
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<USpearfishMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
+	// Two players at most: the partner is always replicated (tethers, telemetry, locator) wherever they swim.
+	bAlwaysRelevant = true;
 
 	GetCapsuleComponent()->InitCapsuleSize(34.f, 88.f);
 	BaseEyeHeight = 64.f;

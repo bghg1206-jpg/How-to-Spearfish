@@ -244,4 +244,92 @@ namespace SpearfishStations
 	}
 }
 
+namespace SpearfishText
+{
+	FText QuickMessage(ESpearfishQuickMessage Type, const FText& ParamName, int32 Count, float MinLengthCm)
+	{
+		switch (Type)
+		{
+		case ESpearfishQuickMessage::ComeBackNow: return LOCTEXT("QM_ComeBack", "Come back to the boat now!");
+		case ESpearfishQuickMessage::OrderExpiring: return LOCTEXT("QM_Expiring", "Hurry - a guest is about to walk out!");
+		case ESpearfishQuickMessage::NeedFish:
+			if (ParamName.IsEmpty())
+			{
+				return LOCTEXT("QM_NeedAny", "We need more fish!");
+			}
+			if (MinLengthCm > 0.f)
+			{
+				return FText::Format(LOCTEXT("QM_NeedSized", "Need {0} x {1}, at least {2}!"), FText::AsNumber(FMath::Max(Count, 1)), ParamName,
+					FText::FromString(Length(MinLengthCm)));
+			}
+			return FText::Format(LOCTEXT("QM_Need", "Need {0} x {1}!"), FText::AsNumber(FMath::Max(Count, 1)), ParamName);
+		case ESpearfishQuickMessage::TooSmall: return LOCTEXT("QM_TooSmall", "Those are too small - go bigger!");
+		case ESpearfishQuickMessage::GreatCatch: return LOCTEXT("QM_Great", "Great catch!");
+		case ESpearfishQuickMessage::MovingBoat: return LOCTEXT("QM_Moving", "Moving the boat - hold on!");
+		case ESpearfishQuickMessage::WatchYourAir: return LOCTEXT("QM_WatchAir", "Watch your air!");
+		case ESpearfishQuickMessage::FoundRare:
+			return ParamName.IsEmpty() ? LOCTEXT("QM_RareAny", "Found something rare down here!")
+				: FText::Format(LOCTEXT("QM_Rare", "Spotted a {0}!"), ParamName);
+		case ESpearfishQuickMessage::BagFull: return LOCTEXT("QM_BagFull", "Bag's full - heading up.");
+		case ESpearfishQuickMessage::LowAir: return LOCTEXT("QM_LowAir", "Low on air!");
+		case ESpearfishQuickMessage::SharkHelp: return LOCTEXT("QM_Shark", "Shark! Help!");
+		case ESpearfishQuickMessage::BringBoat: return LOCTEXT("QM_BringBoat", "Bring the boat to me!");
+		case ESpearfishQuickMessage::OnMyWay: return LOCTEXT("QM_OnMyWay", "On my way back.");
+		case ESpearfishQuickMessage::Yes: return LOCTEXT("QM_Yes", "Yes.");
+		case ESpearfishQuickMessage::No: return LOCTEXT("QM_No", "No.");
+		case ESpearfishQuickMessage::KitchenNeeds:
+			if (ParamName.IsEmpty())
+			{
+				return LOCTEXT("QM_KitchenAny", "Kitchen: we're out of fish!");
+			}
+			if (MinLengthCm > 0.f)
+			{
+				return FText::Format(LOCTEXT("QM_KitchenSized", "Kitchen: still need {0} x {1} ({2}+)."), FText::AsNumber(FMath::Max(Count, 1)), ParamName,
+					FText::FromString(Length(MinLengthCm)));
+			}
+			return FText::Format(LOCTEXT("QM_Kitchen", "Kitchen: still need {0} x {1}."), FText::AsNumber(FMath::Max(Count, 1)), ParamName);
+		default:
+			return FText::GetEmpty();
+		}
+	}
+
+	FText QuickMessageLabel(ESpearfishQuickMessage Type)
+	{
+		switch (Type)
+		{
+		case ESpearfishQuickMessage::ComeBackNow: return LOCTEXT("QL_ComeBack", "Come back");
+		case ESpearfishQuickMessage::OrderExpiring: return LOCTEXT("QL_Expiring", "Hurry");
+		case ESpearfishQuickMessage::NeedFish: return LOCTEXT("QL_Need", "Need fish");
+		case ESpearfishQuickMessage::TooSmall: return LOCTEXT("QL_TooSmall", "Too small");
+		case ESpearfishQuickMessage::GreatCatch: return LOCTEXT("QL_Great", "Great catch");
+		case ESpearfishQuickMessage::MovingBoat: return LOCTEXT("QL_Moving", "Moving boat");
+		case ESpearfishQuickMessage::WatchYourAir: return LOCTEXT("QL_WatchAir", "Watch air");
+		case ESpearfishQuickMessage::FoundRare: return LOCTEXT("QL_Rare", "Found rare");
+		case ESpearfishQuickMessage::BagFull: return LOCTEXT("QL_BagFull", "Bag full");
+		case ESpearfishQuickMessage::LowAir: return LOCTEXT("QL_LowAir", "Low air");
+		case ESpearfishQuickMessage::SharkHelp: return LOCTEXT("QL_Shark", "Shark!");
+		case ESpearfishQuickMessage::BringBoat: return LOCTEXT("QL_BringBoat", "Bring boat");
+		case ESpearfishQuickMessage::OnMyWay: return LOCTEXT("QL_OnMyWay", "On my way");
+		case ESpearfishQuickMessage::Yes: return LOCTEXT("QL_Yes", "Yes");
+		case ESpearfishQuickMessage::No: return LOCTEXT("QL_No", "No");
+		case ESpearfishQuickMessage::KitchenNeeds: return LOCTEXT("QL_Kitchen", "Kitchen");
+		default: return FText::GetEmpty();
+		}
+	}
+}
+
+namespace SpearfishComms
+{
+	TArray<ESpearfishQuickMessage> HotkeysForRole(ESpearfishRole Role)
+	{
+		if (Role == ESpearfishRole::Chef)
+		{
+			return { ESpearfishQuickMessage::NeedFish, ESpearfishQuickMessage::ComeBackNow, ESpearfishQuickMessage::OrderExpiring,
+				ESpearfishQuickMessage::TooSmall, ESpearfishQuickMessage::GreatCatch, ESpearfishQuickMessage::WatchYourAir };
+		}
+		return { ESpearfishQuickMessage::OnMyWay, ESpearfishQuickMessage::BagFull, ESpearfishQuickMessage::FoundRare,
+			ESpearfishQuickMessage::LowAir, ESpearfishQuickMessage::SharkHelp, ESpearfishQuickMessage::BringBoat };
+	}
+}
+
 #undef LOCTEXT_NAMESPACE

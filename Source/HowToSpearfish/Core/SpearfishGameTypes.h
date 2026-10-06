@@ -115,7 +115,8 @@ enum class ESpearfishUIPanel : uint8
 	Chart,
 	Journal,
 	Help,
-	DaySummary
+	DaySummary,
+	Pause
 };
 
 USTRUCT(BlueprintType)
@@ -192,6 +193,16 @@ namespace SpearfishText
 	HOWTOSPEARFISH_API FString Money(int32 Coins);
 	HOWTOSPEARFISH_API FString Clock(float Hour);
 	HOWTOSPEARFISH_API FString Length(float LengthCm);
+	/** Radio line for a quick message. ParamName is the display name of Param (species or category). */
+	HOWTOSPEARFISH_API FText QuickMessage(ESpearfishQuickMessage Type, const FText& ParamName, int32 Count, float MinLengthCm);
+	/** Short label for the quick-comm menu. */
+	HOWTOSPEARFISH_API FText QuickMessageLabel(ESpearfishQuickMessage Type);
+}
+
+namespace SpearfishComms
+{
+	/** The six quick messages on keys 1-6 for a role (Yes/No live on the tablet's comms tab). */
+	HOWTOSPEARFISH_API TArray<ESpearfishQuickMessage> HotkeysForRole(ESpearfishRole Role);
 }
 
 namespace SpearfishStations

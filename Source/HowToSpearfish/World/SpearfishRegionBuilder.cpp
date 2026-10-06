@@ -619,9 +619,11 @@ void ASpearfishRegionBuilder::SpawnLocalActors()
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
+	// The sky outlives region switches (it is not in LocalActors), so a new builder never ends up skyless
+	// when the old one's EndPlay arrives late on a client.
 	if (!ASpearfishSkyController::Get(this))
 	{
-		LocalActors.Add(World->SpawnActor<ASpearfishSkyController>(ASpearfishSkyController::StaticClass(), FTransform::Identity, Params));
+		World->SpawnActor<ASpearfishSkyController>(ASpearfishSkyController::StaticClass(), FTransform::Identity, Params);
 	}
 	ASpearfishOceanSurface* Surface = World->SpawnActor<ASpearfishOceanSurface>(ASpearfishOceanSurface::StaticClass(), FTransform::Identity, Params);
 	if (Surface)
@@ -743,7 +745,7 @@ void ASpearfishRegionBuilder::SpawnDailyContent(int32 Day, int32 DaySeed)
 		TotalWeight += Entry.Weight;
 	}
 	const int32 LootCount = USpearfishSettings::Get()->DailyLootPickups;
-	for (int32 Index = 0; Index < LootCount && TotalWeight > 0.f; ++Index)
+	for (int32 Index = 0; Index < LootCount && TotalWeight > 0.f && Habitat.Num() > 0; ++Index)
 	{
 		float Roll = Rng.FRandRange(0.f, TotalWeight);
 		FName LootId = Region->Loot.Last().Id;
