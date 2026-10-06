@@ -7,6 +7,7 @@ public class HowToSpearfishEditorTarget : TargetRules
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
+		bOverrideBuildEnvironment = true;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.Add("HowToSpearfish");
 	}

@@ -7,6 +7,7 @@ public class HowToSpearfishTarget : TargetRules
 	{
 		Type = TargetType.Game;
 		DefaultBuildSettings = BuildSettingsVersion.V5;
+		bOverrideBuildEnvironment = true;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Latest;
 		ExtraModuleNames.Add("HowToSpearfish");
 	}
