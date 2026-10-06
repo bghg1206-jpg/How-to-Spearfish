@@ -27,12 +27,12 @@ void ASpearfishGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	DOREPLIFETIME(ASpearfishGameState, TodayStats);
 }
 
-ASpearfishPlayerState* ASpearfishGameState::FindPlayerWithRole(ESpearfishRole Role) const
+ASpearfishPlayerState* ASpearfishGameState::FindPlayerWithRole(ESpearfishRole WantedRole) const
 {
 	for (APlayerState* PlayerState : PlayerArray)
 	{
 		ASpearfishPlayerState* SpearfishState = Cast<ASpearfishPlayerState>(PlayerState);
-		if (SpearfishState && SpearfishState->GetRole() == Role)
+		if (SpearfishState && SpearfishState->GetRole() == WantedRole)
 		{
 			return SpearfishState;
 		}

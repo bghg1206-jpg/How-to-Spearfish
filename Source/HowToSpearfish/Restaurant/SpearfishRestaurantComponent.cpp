@@ -214,7 +214,7 @@ void USpearfishRestaurantComponent::BeginDay(int32 Day, int32 Seed)
 	if (const ASpearfishGameState* GameState = GetWorld()->GetGameState<ASpearfishGameState>())
 	{
 		const USpearfishDataRegistry* Registry = USpearfishDataRegistry::Get(this);
-		for (const FName EventId : GameState->GetActiveEvents())
+		for (const FName& EventId : GameState->GetActiveEvents())
 		{
 			const FSpearfishEventDef* Event = Registry ? Registry->FindEvent(EventId) : nullptr;
 			bCriticPending |= Event && Event->Type == ESpearfishEventType::CriticVisit;
@@ -385,7 +385,7 @@ bool USpearfishRestaurantComponent::IsRecipeAvailable(const FSpearfishRecipeDef&
 		if (!bAvailable && !Req.SpeciesId.IsNone())
 		{
 			// Event visitors (e.g. a legendary fish) put their dish on the menu for the day.
-			for (const FName EventId : GameState->GetActiveEvents())
+			for (const FName& EventId : GameState->GetActiveEvents())
 			{
 				const FSpearfishEventDef* Event = Registry->FindEvent(EventId);
 				bAvailable |= Event && Event->SpeciesId == Req.SpeciesId;
@@ -416,7 +416,7 @@ FName USpearfishRestaurantComponent::PickRecipe(const FSpearfishCustomerDef& Cus
 			continue;
 		}
 		float Weight = 1.f;
-		for (const FName Tag : Pair.Value.Tags)
+		for (const FName& Tag : Pair.Value.Tags)
 		{
 			Weight += Customer.FavoriteTags.Contains(Tag) ? 1.5f : 0.f;
 		}
@@ -504,7 +504,7 @@ void USpearfishRestaurantComponent::OnGuestSeated(ASpearfishCustomer* Guest)
 
 	if (Customer->bShareRumors)
 	{
-		for (const FName EventId : GameState->GetActiveEvents())
+		for (const FName& EventId : GameState->GetActiveEvents())
 		{
 			if (!GameState->GetRevealedRumors().Contains(EventId))
 			{

@@ -340,7 +340,7 @@ namespace SpearfishUI
 			if (Context.GameState->GetRevealedRumors().Num() > 0)
 			{
 				Rows.Add(MakeHeader(LOCTEXT("RumorsHeader", "Rumors heard today")));
-				for (const FName EventId : Context.GameState->GetRevealedRumors())
+				for (const FName& EventId : Context.GameState->GetRevealedRumors())
 				{
 					if (const FSpearfishEventDef* Event = Context.Registry->FindEvent(EventId))
 					{
@@ -382,7 +382,7 @@ namespace SpearfishUI
 			if (Context.Progression->GetOwnedUpgrades().Num() > 0)
 			{
 				Rows.Add(MakeHeader(LOCTEXT("UpgradesHeader", "Upgrades")));
-				for (const FName Upgrade : Context.Progression->GetOwnedUpgrades())
+				for (const FName& Upgrade : Context.Progression->GetOwnedUpgrades())
 				{
 					Rows.Add(MakeInfo(Name(Context, Upgrade), FText::GetEmpty(), Muted));
 				}
@@ -553,7 +553,7 @@ namespace SpearfishUI
 			}
 			Rows.Add(MakeHeader(FText::Format(LOCTEXT("JournalHeader", "Species caught: {0} / {1}"), FText::AsNumber(Context.Journal->CountCaughtSpecies()),
 				FText::AsNumber(Context.Registry->GetAllFish().Num()))));
-			for (const FName SpeciesId : Context.Registry->GetSortedFishIds())
+			for (const FName& SpeciesId : Context.Registry->GetSortedFishIds())
 			{
 				const FSpearfishFishSpeciesDef* Species = Context.Registry->FindFish(SpeciesId);
 				const FSpearfishJournalEntry* Entry = Context.Journal->FindEntry(SpeciesId);
@@ -599,7 +599,7 @@ namespace SpearfishUI
 			TArray<FName> LootIds;
 			Context.Registry->GetAllLoot().GetKeys(LootIds);
 			LootIds.Sort([](const FName& A, const FName& B) { return A.LexicalLess(B); });
-			for (const FName LootId : LootIds)
+			for (const FName& LootId : LootIds)
 			{
 				const FSpearfishLootDef* Loot = Context.Registry->FindLoot(LootId);
 				const FSpearfishLootRecord* Record = Context.Journal->GetLootRecords().FindByPredicate([LootId](const FSpearfishLootRecord& R) { return R.LootId == LootId; });

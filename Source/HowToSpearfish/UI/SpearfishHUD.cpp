@@ -238,8 +238,8 @@ void ASpearfishHUD::DrawStatusBar()
 	const ASpearfishPlayerController* Controller = GetSpearfishController();
 	if (State)
 	{
-		const FString Role = SpearfishText::RoleName(State->GetRole()).ToString().ToUpper();
-		TextRight(Role, Canvas->ClipX - S(24.f), Y, SpearfishText::RoleColor(State->GetRole()), LargeFont, 0.8f);
+		const FString RoleLabel = SpearfishText::RoleName(State->GetRole()).ToString().ToUpper();
+		TextRight(RoleLabel, Canvas->ClipX - S(24.f), Y, SpearfishText::RoleColor(State->GetRole()), LargeFont, 0.8f);
 	}
 	if (Controller && Controller->IsTalking())
 	{
@@ -788,9 +788,9 @@ void ASpearfishHUD::DrawHelp(float X, float Y, float Width)
 	using namespace SpearfishHUDPrivate;
 	const ASpearfishPlayerState* State = PlayerOwner ? PlayerOwner->GetPlayerState<ASpearfishPlayerState>() : nullptr;
 	const ASpearfishGameState* GameState = GetSpearfishGameState();
-	const ESpearfishRole Role = State ? State->GetRole() : ESpearfishRole::Diver;
-	Text(FString::Printf(TEXT("You are the %s: %s"), *SpearfishText::RoleName(Role).ToString(),
-		*SpearfishText::RoleDuty(Role, GameState && GameState->IsSoloSession()).ToString()), X, Y, SpearfishText::RoleColor(Role), SmallFont, 1.2f);
+	const ESpearfishRole PlayerRole = State ? State->GetRole() : ESpearfishRole::Diver;
+	Text(FString::Printf(TEXT("You are the %s: %s"), *SpearfishText::RoleName(PlayerRole).ToString(),
+		*SpearfishText::RoleDuty(PlayerRole, GameState && GameState->IsSoloSession()).ToString()), X, Y, SpearfishText::RoleColor(PlayerRole), SmallFont, 1.2f);
 	Y += S(40.f);
 
 	struct FControl
@@ -820,7 +820,7 @@ void ASpearfishHUD::DrawHelp(float X, float Y, float Width)
 		Y += S(25.f);
 	}
 	Y += S(14.f);
-	const TArray<FString> Tips = Role == ESpearfishRole::Chef
+	const TArray<FString> Tips = PlayerRole == ESpearfishRole::Chef
 		? TArray<FString>{ TEXT("Orders arrive while the boat is anchored and the sign says OPEN."), TEXT("Start a dish on the tablet, then cook each step at its station."),
 			TEXT("The diver can't see your orders - radio what you need (1 = need fish)."), TEXT("Serve ready dishes at the pass before the guests lose patience.") }
 		: TArray<FString>{ TEXT("Watch the air gauge: surface before it runs dry or you'll black out and lose the bag."),

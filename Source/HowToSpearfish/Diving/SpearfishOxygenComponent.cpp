@@ -81,7 +81,7 @@ void USpearfishOxygenComponent::TickComponent(float DeltaTime, ELevelTick TickTy
 
 	FSpearfishBreathInput Input;
 	// Breathing happens at the head, not the capsule centre.
-	Input.DepthMeters = Movement->IsSwimming() ? Movement->GetDepthMeters() - 0.5f : 0.f;
+	Input.DepthMeters = Movement->IsInSea() ? Movement->GetDepthMeters() - 0.5f : 0.f;
 	Input.SpeedFraction = Movement->GetSwimSpeedFraction();
 	Input.bSprinting = Movement->IsSprintSwimming();
 	Input.SafeDepthMeters = SafeDepthM;

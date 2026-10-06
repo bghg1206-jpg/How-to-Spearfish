@@ -85,7 +85,7 @@ public:
 
 	/** Morning: fade in and show the role banner. */
 	UFUNCTION(Client, Reliable)
-	void ClientWakeUp(int32 Day, ESpearfishRole Role, bool bRoleChanged);
+	void ClientWakeUp(int32 Day, ESpearfishRole NewRole, bool bRoleChanged);
 
 	UFUNCTION(Client, Reliable)
 	void ClientSetPendingTravel(FName RegionId);
@@ -147,7 +147,7 @@ public:
 	void SpearfishSpawnFish(FName SpeciesId);
 
 	UFUNCTION(Exec)
-	void SpearfishRole(FName Role);
+	void SpearfishRole(FName RoleName);
 
 	UFUNCTION(Exec)
 	void SpearfishEvent(FName EventId);

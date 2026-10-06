@@ -156,25 +156,25 @@ void ASpearfishGameMode::PostLogin(APlayerController* NewPlayer)
 	// Roles first, so the pawn spawned by Super gets the right kit.
 	ASpearfishPlayerState* State = NewPlayer ? NewPlayer->GetPlayerState<ASpearfishPlayerState>() : nullptr;
 	USpearfishRoleSubsystem* Roles = GetWorld()->GetSubsystem<USpearfishRoleSubsystem>();
-	ESpearfishRole Role = ESpearfishRole::Diver;
+	ESpearfishRole AssignedRole = ESpearfishRole::Diver;
 	if (State && Roles)
 	{
-		Role = Roles->RegisterPlayer(State);
+		AssignedRole = Roles->RegisterPlayer(State);
 	}
 
 	Super::PostLogin(NewPlayer);
 
 	if (bSessionReady && State)
 	{
-		if (ASpearfishGameState* GameState = GetGameState<ASpearfishGameState>())
+		if (ASpearfishGameState* SessionState = GetGameState<ASpearfishGameState>())
 		{
-			GameState->BroadcastNotice(FText::Format(LOCTEXT("Joined", "{0} came aboard as the {1}."), FText::FromString(State->GetPlayerName()),
-				SpearfishText::RoleName(Role)), ESpearfishNoticeType::Good);
+			SessionState->BroadcastNotice(FText::Format(LOCTEXT("Joined", "{0} came aboard as the {1}."), FText::FromString(State->GetPlayerName()),
+				SpearfishText::RoleName(AssignedRole)), ESpearfishNoticeType::Good);
 		}
 		if (ASpearfishPlayerController* Controller = Cast<ASpearfishPlayerController>(NewPlayer))
 		{
 			const USpearfishDayCycleComponent* DayCycle = GetGameState<ASpearfishGameState>()->GetDayCycle();
-			Controller->ClientWakeUp(DayCycle ? DayCycle->GetDay() : 1, Role, false);
+			Controller->ClientWakeUp(DayCycle ? DayCycle->GetDay() : 1, AssignedRole, false);
 			Controller->ClientSetPendingTravel(PendingRegion);
 		}
 	}
@@ -205,9 +205,9 @@ void ASpearfishGameMode::Logout(AController* Exiting)
 		{
 			Roles->UnregisterPlayer(State);
 		}
-		if (ASpearfishGameState* GameState = GetGameState<ASpearfishGameState>(); GameState && bSessionReady)
+		if (ASpearfishGameState* SessionState = GetGameState<ASpearfishGameState>(); SessionState && bSessionReady)
 		{
-			GameState->BroadcastNotice(FText::Format(LOCTEXT("Left", "{0} left the boat. The auto-chef takes over the kitchen."), FText::FromString(State->GetPlayerName())),
+			SessionState->BroadcastNotice(FText::Format(LOCTEXT("Left", "{0} left the boat. The auto-chef takes over the kitchen."), FText::FromString(State->GetPlayerName())),
 				ESpearfishNoticeType::Warning);
 		}
 	}
@@ -799,10 +799,10 @@ void ASpearfishGameMode::HandleDebugCommand(ASpearfishPlayerController* By, cons
 	else if (Command == TEXT("Role"))
 	{
 		ASpearfishPlayerState* PlayerState = By->GetPlayerState<ASpearfishPlayerState>();
-		const ESpearfishRole Role = Argument.Equals(TEXT("Chef"), ESearchCase::IgnoreCase) ? ESpearfishRole::Chef : ESpearfishRole::Diver;
+		const ESpearfishRole DebugRole = Argument.Equals(TEXT("Chef"), ESearchCase::IgnoreCase) ? ESpearfishRole::Chef : ESpearfishRole::Diver;
 		if (PlayerState)
 		{
-			PlayerState->SetRole(Role);
+			PlayerState->SetRole(DebugRole);
 			State->SetAutoChefActive(State->FindPlayerWithRole(ESpearfishRole::Chef) == nullptr);
 		}
 	}

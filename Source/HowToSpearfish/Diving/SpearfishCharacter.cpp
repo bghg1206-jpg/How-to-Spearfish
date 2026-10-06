@@ -105,7 +105,7 @@ ESpearfishRole ASpearfishCharacter::GetRole() const
 bool ASpearfishCharacter::IsSwimming() const
 {
 	const USpearfishMovementComponent* Movement = GetSpearfishMovement();
-	return Movement && Movement->IsSwimming();
+	return Movement && Movement->IsInSea();
 }
 
 bool ASpearfishCharacter::IsHeadUnderwater() const
@@ -223,16 +223,16 @@ void ASpearfishCharacter::ApplyRoleLoadout(bool bRefillAir)
 	}
 	const ASpearfishGameState* GameState = GetWorld()->GetGameState<ASpearfishGameState>();
 	const USpearfishProgressionComponent* Progression = GameState ? GameState->GetProgression() : nullptr;
-	const ESpearfishRole Role = GetRole();
+	const ESpearfishRole CurrentRole = GetRole();
 
-	Equipment->ApplyLoadout(Progression ? Progression->GetLoadout() : TArray<FName>(), Role);
+	Equipment->ApplyLoadout(Progression ? Progression->GetLoadout() : TArray<FName>(), CurrentRole);
 
 	const FSpearfishDiverStats& Stats = Equipment->GetStats();
 	Oxygen->ConfigureTank(Stats.MaxAir, Stats.SafeDepthM, Stats.StingResist, bRefillAir);
 	Bag->SetCapacity(Stats.Bag);
 
 	// Leaving the diver role on the boat: whatever is in the bag goes to the kitchen.
-	if (Role != ESpearfishRole::Diver && !Bag->IsEmpty() && GameState && GameState->GetBoat())
+	if (CurrentRole != ESpearfishRole::Diver && !Bag->IsEmpty() && GameState && GameState->GetBoat())
 	{
 		SpearfishCatch::DepositAtBoat(this, GameState->GetBoat());
 	}

@@ -120,7 +120,7 @@ namespace SpearfishEventDirector
 		}
 
 		TArray<FSpearfishEventCandidate> Candidates;
-		for (const FName EventId : Region.Events)
+		for (const FName& EventId : Region.Events)
 		{
 			if (const FSpearfishEventDef* Event = Registry->FindEvent(EventId))
 			{
@@ -135,7 +135,7 @@ namespace SpearfishEventDirector
 
 		const TArray<FName> Events = SpearfishEventRules::RollDailyEvents(Candidates, Day, DaySeed ^ 0x5EA5);
 		FRandomStream Stream(DaySeed + 4242);
-		for (const FName EventId : Events)
+		for (const FName& EventId : Events)
 		{
 			if (const FSpearfishEventDef* Event = Registry->FindEvent(EventId))
 			{

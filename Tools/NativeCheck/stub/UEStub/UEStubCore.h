@@ -66,7 +66,9 @@ using SIZE_T = std::size_t;
 
 #define WITH_EDITOR 1
 #define WITH_EDITORONLY_DATA 1
+#ifndef WITH_DEV_AUTOMATION_TESTS
 #define WITH_DEV_AUTOMATION_TESTS 0
+#endif
 #define UE_BUILD_SHIPPING 0
 #define UE_BUILD_DEBUG 0
 #define UE_SERVER 0
@@ -119,6 +121,23 @@ inline T&& Forward(typename std::remove_reference<T>::type& Obj) { return static
 // ---------------------------------------------------------------------------------------------
 // FString
 // ---------------------------------------------------------------------------------------------
+namespace ESearchCase
+{
+	enum Type
+	{
+		CaseSensitive,
+		IgnoreCase
+	};
+}
+namespace ESearchDir
+{
+	enum Type
+	{
+		FromStart,
+		FromEnd
+	};
+}
+
 class FString
 {
 public:
@@ -143,14 +162,14 @@ public:
 	friend FString operator+(const FString& A, const FString& B) { return FString(A.Data + B.Data); }
 	friend FString operator+(const FString& A, const TCHAR* B) { return FString(A.Data + B); }
 	friend FString operator+(const TCHAR* A, const FString& B) { return FString(std::string(A) + B.Data); }
-	bool operator==(const FString& Other) const { return Equals(Other, false); }
+	bool operator==(const FString& Other) const { return Equals(Other, ESearchCase::IgnoreCase); }
 	bool operator!=(const FString& Other) const { return !(*this == Other); }
 	bool operator<(const FString& Other) const { return Data < Other.Data; }
 	TCHAR operator[](int32 Index) const { return Data[static_cast<size_t>(Index)]; }
 
-	bool Equals(const FString& Other, bool bCaseSensitive = true) const
+	bool Equals(const FString& Other, ESearchCase::Type SearchCase = ESearchCase::CaseSensitive) const
 	{
-		if (bCaseSensitive)
+		if (SearchCase == ESearchCase::CaseSensitive)
 		{
 			return Data == Other.Data;
 		}
@@ -168,9 +187,25 @@ public:
 		return true;
 	}
 
-	bool Contains(const FString& Sub) const { return Data.find(Sub.Data) != std::string::npos; }
-	bool StartsWith(const FString& Prefix) const { return Data.rfind(Prefix.Data, 0) == 0; }
-	bool EndsWith(const FString& Suffix) const
+	bool Contains(const FString& Sub, ESearchCase::Type SearchCase = ESearchCase::IgnoreCase, ESearchDir::Type Dir = ESearchDir::FromStart) const
+	{
+		return SearchCase == ESearchCase::CaseSensitive ? Data.find(Sub.Data) != std::string::npos : ToLower().Data.find(Sub.ToLower().Data) != std::string::npos;
+	}
+	bool StartsWith(const FString& Prefix, ESearchCase::Type SearchCase = ESearchCase::IgnoreCase) const { return Data.rfind(Prefix.Data, 0) == 0; }
+	FString TrimStartAndEnd() const
+	{
+		const size_t Start = Data.find_first_not_of(" \t\r\n");
+		if (Start == std::string::npos)
+		{
+			return FString();
+		}
+		const size_t End = Data.find_last_not_of(" \t\r\n");
+		return FString(Data.substr(Start, End - Start + 1));
+	}
+	FString TrimStart() const { const size_t Start = Data.find_first_not_of(" \t\r\n"); return Start == std::string::npos ? FString() : FString(Data.substr(Start)); }
+	FString TrimEnd() const { const size_t End = Data.find_last_not_of(" \t\r\n"); return End == std::string::npos ? FString() : FString(Data.substr(0, End + 1)); }
+	bool IsNumeric() const { return !Data.empty() && std::all_of(Data.begin(), Data.end(), [](char C) { return std::isdigit(static_cast<unsigned char>(C)) || C == '.' || C == '-'; }); }
+	bool EndsWith(const FString& Suffix, ESearchCase::Type SearchCase = ESearchCase::IgnoreCase) const
 	{
 		return Data.size() >= Suffix.Data.size() && Data.compare(Data.size() - Suffix.Data.size(), Suffix.Data.size(), Suffix.Data) == 0;
 	}
@@ -262,6 +297,17 @@ public:
 	}
 };
 
+struct FCString
+{
+	static int32 Atoi(const TCHAR* String) { return std::atoi(String); }
+	static int64 Atoi64(const TCHAR* String) { return std::atoll(String); }
+	static float Atof(const TCHAR* String) { return static_cast<float>(std::atof(String)); }
+	static double Atod(const TCHAR* String) { return std::atof(String); }
+	static int32 Strlen(const TCHAR* String) { return static_cast<int32>(std::strlen(String)); }
+	static int32 Strcmp(const TCHAR* A, const TCHAR* B) { return std::strcmp(A, B); }
+	static int32 Stricmp(const TCHAR* A, const TCHAR* B);
+};
+
 inline uint32 GetTypeHash(const FString& S) { return static_cast<uint32>(std::hash<std::string>()(S.ToLower().Data)); }
 
 // ---------------------------------------------------------------------------------------------
@@ -321,17 +367,43 @@ public:
 	FText() = default;
 	static FText FromString(const FString& In) { FText T; T.Str = In; return T; }
 	static FText FromName(const FName& In) { return FromString(In.ToString()); }
-	static FText AsNumber(int32 V) { return FromString(FString::FromInt(V)); }
-	static FText AsNumber(float V) { return FromString(FString::SanitizeFloat(V)); }
-	static FText AsNumber(double V) { return FromString(FString::SanitizeFloat(V)); }
+	// UE overloads AsNumber for every integer and floating point type.
+	template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+	static FText AsNumber(T V) { return FromString(FString::SanitizeFloat(static_cast<double>(V))); }
 	static const FText& GetEmpty() { static FText Empty; return Empty; }
 	static FText Format(const FText& Fmt, const FFormatNamedArguments&) { return Fmt; }
+	// Like UE: ordered arguments must convert to FFormatArgumentValue (FText or numbers; FString/FName do not).
 	template <typename... TArgs>
-	static FText Format(const FText& Fmt, TArgs&&...) { return Fmt; }
+	static FText Format(const FText& Fmt, TArgs&&... Args);
+	template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+	static FText AsPercent(T V) { return FromString(FString::SanitizeFloat(static_cast<double>(V) * 100.0) + "%"); }
+	template <typename T, typename = std::enable_if_t<std::is_arithmetic_v<T>>>
+	static FText AsCurrency(T V) { return FromString(FString::SanitizeFloat(static_cast<double>(V))); }
+	static FText AsCultureInvariant(const FString& In) { return FromString(In); }
+	FText ToUpper() const { return FromString(Str.ToUpper()); }
+	FText ToLower() const { return FromString(Str.ToLower()); }
+	bool IsEmptyOrWhitespace() const { return Str.IsEmpty(); }
 	const FString& ToString() const { return Str; }
 	bool IsEmpty() const { return Str.IsEmpty(); }
 	bool EqualTo(const FText& Other) const { return Str == Other.Str; }
 };
+struct FFormatArgumentValue
+{
+	FFormatArgumentValue(const FText& In) {}
+	FFormatArgumentValue(int32 In) {}
+	FFormatArgumentValue(uint32 In) {}
+	FFormatArgumentValue(int64 In) {}
+	FFormatArgumentValue(uint64 In) {}
+	FFormatArgumentValue(float In) {}
+	FFormatArgumentValue(double In) {}
+};
+template <typename... TArgs>
+FText FText::Format(const FText& Fmt, TArgs&&... Args)
+{
+	const FFormatArgumentValue Values[] = { FFormatArgumentValue(Args)..., FFormatArgumentValue(0) };
+	(void)Values;
+	return Fmt;
+}
 #define LOCTEXT(Key, Text) FText::FromString(FString(Text))
 #define NSLOCTEXT(Ns, Key, Text) FText::FromString(FString(Text))
 #define INVTEXT(Text) FText::FromString(FString(Text))
@@ -793,6 +865,9 @@ struct FMath
 	static int32 TruncToInt(float V) { return static_cast<int32>(V); }
 	static int32 TruncToInt(double V) { return static_cast<int32>(V); }
 	static float FloorToFloat(float V) { return std::floor(V); }
+	static double FloorToDouble(double V) { return std::floor(V); }
+	static double CeilToDouble(double V) { return std::ceil(V); }
+	static double RoundToDouble(double V) { return std::round(V); }
 	static float RoundToFloat(float V) { return std::floor(V + 0.5f); }
 	static float GridSnap(float V, float Grid) { return Grid == 0.f ? V : std::floor((V + 0.5f * Grid) / Grid) * Grid; }
 	static bool IsNearlyZero(float V, float Tol = UE_SMALL_NUMBER) { return std::fabs(V) <= Tol; }
@@ -844,7 +919,8 @@ struct FMath
 	static float FRandRange(float A, float B) { return A + (B - A) * FRand(); }
 	static int32 RandRange(int32 A, int32 B) { return A + (B > A ? std::rand() % (B - A + 1) : 0); }
 	static int32 RandHelper(int32 A) { return A > 0 ? std::rand() % A : 0; }
-	static bool RandBool() { return (std::rand() & 1) != 0; }
+	static int32 Rand() { return std::rand(); }
+	static bool RandBool() { return (std::rand() & 1) == 1; }
 	static FVector VRand();
 	static FVector VRandCone(const FVector& Dir, float ConeHalfAngleRad);
 	static float PerlinNoise1D(float X) { return std::sin(X * 1.7f) * 0.5f + std::sin(X * 0.37f) * 0.5f; }
@@ -943,6 +1019,9 @@ struct FVector2D
 	static const FVector2D UnitVector;
 	static double DotProduct(const FVector2D& A, const FVector2D& B) { return A.X * B.X + A.Y * B.Y; }
 	static double Distance(const FVector2D& A, const FVector2D& B) { return (A - B).Size(); }
+	bool Equals(const FVector2D& O, double Tol = UE_KINDA_SMALL_NUMBER) const { return std::fabs(X - O.X) <= Tol && std::fabs(Y - O.Y) <= Tol; }
+	bool IsNearlyZero(double Tol = UE_KINDA_SMALL_NUMBER) const { return std::fabs(X) <= Tol && std::fabs(Y) <= Tol; }
+	FString ToString() const { return FString::Printf("X=%.3f Y=%.3f", X, Y); }
 };
 inline const FVector2D FVector2D::ZeroVector(0.0, 0.0);
 inline const FVector2D FVector2D::UnitVector(1.0, 1.0);
@@ -1063,6 +1142,7 @@ struct FVector
 	FQuat ToOrientationQuat() const;
 	FVector2D UnitCartesianToSpherical() const;
 	FString ToString() const { return FString::Printf("X=%.3f Y=%.3f Z=%.3f", X, Y, Z); }
+	FString ToCompactString() const { return FString::Printf("X=%.2f Y=%.2f Z=%.2f", X, Y, Z); }
 
 	static double DotProduct(const FVector& A, const FVector& B) { return A | B; }
 	static FVector CrossProduct(const FVector& A, const FVector& B) { return A ^ B; }

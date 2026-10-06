@@ -105,9 +105,9 @@ void ASpearfishPlayerController::SetupInputComponent()
 void ASpearfishPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	if (ASpearfishCharacter* Character = Cast<ASpearfishCharacter>(InPawn))
+	if (ASpearfishCharacter* PossessedCharacter = Cast<ASpearfishCharacter>(InPawn))
 	{
-		Character->ApplyRoleLoadout(true);
+		PossessedCharacter->ApplyRoleLoadout(true);
 	}
 }
 
@@ -178,8 +178,8 @@ bool ASpearfishPlayerController::CanUseTabletHere() const
 		return true;
 	}
 	// The diver reads the tablet on deck, never underwater.
-	const ASpearfishCharacter* Character = Cast<ASpearfishCharacter>(GetPawn());
-	return Character && !Character->IsSwimming();
+	const ASpearfishCharacter* ControlledCharacter = Cast<ASpearfishCharacter>(GetPawn());
+	return ControlledCharacter && !ControlledCharacter->IsSwimming();
 }
 
 // ------------------------------------------------------------------------------------- Panels
@@ -437,12 +437,12 @@ void ASpearfishPlayerController::SendQuickMessage(ESpearfishQuickMessage Type)
 	else if (Type == ESpearfishQuickMessage::FoundRare)
 	{
 		// Name what the diver is looking at or fighting, if anything.
-		if (const ASpearfishCharacter* Character = Cast<ASpearfishCharacter>(GetPawn()))
+		if (const ASpearfishCharacter* ControlledCharacter = Cast<ASpearfishCharacter>(GetPawn()))
 		{
-			const ASpearfishFish* Fish = Character->GetSpeargun() ? Character->GetSpeargun()->GetHookedFish() : nullptr;
-			if (!Fish && Character->GetInteraction())
+			const ASpearfishFish* Fish = ControlledCharacter->GetSpeargun() ? ControlledCharacter->GetSpeargun()->GetHookedFish() : nullptr;
+			if (!Fish && ControlledCharacter->GetInteraction())
 			{
-				Fish = Cast<ASpearfishFish>(Character->GetInteraction()->GetFocusedActor());
+				Fish = Cast<ASpearfishFish>(ControlledCharacter->GetInteraction()->GetFocusedActor());
 			}
 			Param = Fish ? Fish->GetSpeciesId() : NAME_None;
 		}
@@ -680,7 +680,7 @@ void ASpearfishPlayerController::ClientShowDaySummary_Implementation(const FSpea
 	OpenPanel(ESpearfishUIPanel::DaySummary);
 }
 
-void ASpearfishPlayerController::ClientWakeUp_Implementation(int32 Day, ESpearfishRole Role, bool bRoleChanged)
+void ASpearfishPlayerController::ClientWakeUp_Implementation(int32 Day, ESpearfishRole NewRole, bool bRoleChanged)
 {
 	FadeTarget = 0.f;
 	FadeSpeed = 0.5f;
@@ -688,7 +688,7 @@ void ASpearfishPlayerController::ClientWakeUp_Implementation(int32 Day, ESpearfi
 	PendingTravel = NAME_None;
 	if (bRoleChanged)
 	{
-		AddFeed(FText::Format(LOCTEXT("RoleSwap", "Day {0}: roles swapped - you are the {1} today."), FText::AsNumber(Day), SpearfishText::RoleName(Role)),
+		AddFeed(FText::Format(LOCTEXT("RoleSwap", "Day {0}: roles swapped - you are the {1} today."), FText::AsNumber(Day), SpearfishText::RoleName(NewRole)),
 			ESpearfishNoticeType::Good, false);
 	}
 }
@@ -934,9 +934,9 @@ void ASpearfishPlayerController::SpearfishSpawnFish(FName SpeciesId)
 	ServerDebugCommand(TEXT("SpawnFish"), SpeciesId.ToString());
 }
 
-void ASpearfishPlayerController::SpearfishRole(FName Role)
+void ASpearfishPlayerController::SpearfishRole(FName RoleName)
 {
-	ServerDebugCommand(TEXT("Role"), Role.ToString());
+	ServerDebugCommand(TEXT("Role"), RoleName.ToString());
 }
 
 void ASpearfishPlayerController::SpearfishEvent(FName EventId)

@@ -175,7 +175,7 @@ void USpearfishDataRegistry::Validate()
 				Report(FString::Printf(TEXT("region %s uses unknown loot %s"), *Pair.Key.ToString(), *Entry.Id.ToString()));
 			}
 		}
-		for (const FName EventId : Pair.Value.Events)
+		for (const FName& EventId : Pair.Value.Events)
 		{
 			if (!Events.Contains(EventId))
 			{

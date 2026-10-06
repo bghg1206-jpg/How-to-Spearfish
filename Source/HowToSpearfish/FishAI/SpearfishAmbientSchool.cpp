@@ -168,7 +168,7 @@ void ASpearfishAmbientSchool::Simulate(float DeltaSeconds, const FVector& Threat
 			const FBoid& Other = Boids[(Index + Offset) % Boids.Num()];
 			const FVector Away = Boid.Position - Other.Position;
 			const double Gap = Away.Size();
-			if (Gap > KINDA_SMALL_NUMBER && Gap < SeparationDistance)
+			if (Gap > UE_KINDA_SMALL_NUMBER && Gap < SeparationDistance)
 			{
 				Steer += Away / Gap * (SeparationDistance - Gap) * 25.0;
 			}
@@ -178,7 +178,7 @@ void ASpearfishAmbientSchool::Simulate(float DeltaSeconds, const FVector& Threat
 		{
 			const FVector FromThreat = Boid.Position - Threat;
 			const double ThreatDistance = FromThreat.Size();
-			if (ThreatDistance < FleeRadius && ThreatDistance > KINDA_SMALL_NUMBER)
+			if (ThreatDistance < FleeRadius && ThreatDistance > UE_KINDA_SMALL_NUMBER)
 			{
 				Steer += FromThreat / ThreatDistance * 1400.0 * (1.0 - ThreatDistance / FleeRadius);
 				PanicTimer = 1.5f;
@@ -194,7 +194,7 @@ void ASpearfishAmbientSchool::Simulate(float DeltaSeconds, const FVector& Threat
 		}
 		else if (CurrentSpeed < Speed * 0.4f)
 		{
-			Boid.Velocity = (CurrentSpeed > KINDA_SMALL_NUMBER ? Boid.Velocity / CurrentSpeed : FVector::ForwardVector) * (Speed * 0.4f);
+			Boid.Velocity = (CurrentSpeed > UE_KINDA_SMALL_NUMBER ? Boid.Velocity / CurrentSpeed : FVector::ForwardVector) * (Speed * 0.4f);
 		}
 		// Fish swim mostly level.
 		Boid.Velocity.Z = FMath::Clamp(Boid.Velocity.Z, -0.45 * CurrentSpeed, 0.45 * CurrentSpeed);
@@ -212,7 +212,7 @@ void ASpearfishAmbientSchool::PushTransforms()
 	for (int32 Index = 0; Index < Boids.Num(); ++Index)
 	{
 		const FBoid& Boid = Boids[Index];
-		const FVector Forward = Boid.Velocity.GetSafeNormal(KINDA_SMALL_NUMBER, FVector::ForwardVector);
+		const FVector Forward = Boid.Velocity.GetSafeNormal(UE_KINDA_SMALL_NUMBER, FVector::ForwardVector);
 		const FQuat Rotation = Forward.Rotation().Quaternion();
 		BodyTransforms[Index] = FTransform(Rotation, Boid.Position, BodyScale);
 		const FQuat Wiggle = FRotator(0.f, FMath::Sin(Boid.Phase) * 25.f, 0.f).Quaternion();

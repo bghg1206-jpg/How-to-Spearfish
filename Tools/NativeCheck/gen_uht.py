@@ -206,12 +206,42 @@ def generate(header_path, module_dir, out_dir, errors, onreps):
             parts += [f'typedef {name} ThisClass;', 'static class UClass* StaticClass();'] + decls + ['private:']
         out.append(f'#define {file_id}_{line_no}_GENERATED_BODY ' + ' '.join(parts))
 
-    # ReplicatedUsing validation
+    # ReplicatedUsing validation: the handler must exist and be a UFUNCTION (UHT rejects plain functions).
     functions = set(re.findall(r'\bvoid\s+(OnRep_\w+)\s*\(', text))
+    ufunctions = set(re.findall(r'UFUNCTION\s*\([^)]*\)\s*(?:virtual\s+)?void\s+(OnRep_\w+)\s*\(', text))
     for match in re.finditer(r'ReplicatedUsing\s*=\s*(\w+)', text):
         handler = match.group(1)
         if handler not in functions:
             errors.append(f'{rel}: ReplicatedUsing={handler} has no matching void {handler}(...) declaration')
+        elif handler not in ufunctions:
+            errors.append(f'{rel}: {handler} is used by ReplicatedUsing but is not declared UFUNCTION()')
+
+    # UPROPERTY types UHT cannot reflect.
+    for match in re.finditer(r'UPROPERTY\s*\(', text):
+        _, close = balanced_args(text, match.end() - 1)
+        decl = text[close + 1:text.find(';', close)].strip()
+        decl_type = re.sub(r'\s+\w+\s*(?:=.*|:\s*\d+)?$', '', decl, flags=re.S)
+        line_no = text.count('\n', 0, match.start()) + 1
+        if re.search(r'\b(TArray|TMap|TSet)\s*<[^;]*\b(TArray|TMap|TSet)\s*<', decl_type):
+            errors.append(f'{rel}:{line_no}: nested containers are not supported in UPROPERTY ({decl_type})')
+        if re.search(r'\b(std::|TFunction|TSharedPtr|TSharedRef|TUniquePtr|TWeakPtr)\b', decl_type):
+            errors.append(f'{rel}:{line_no}: type {decl_type} cannot be a UPROPERTY')
+        if re.search(r'\b(int|unsigned|long|short)\b(?!\s*\d)', decl_type) and 'int32' not in decl_type:
+            errors.append(f'{rel}:{line_no}: use sized integer types in UPROPERTY ({decl_type})')
+
+    # RPCs must return void and must not be const.
+    for spec, return_type, func, params, is_const in parse_ufunctions(text):
+        spec_words = set(re.findall(r'\b\w+\b', spec))
+        if spec_words & {'Server', 'Client', 'NetMulticast'}:
+            if return_type != 'void':
+                errors.append(f'{rel}: RPC {func} must return void')
+            if is_const:
+                errors.append(f'{rel}: RPC {func} must not be const')
+            if not spec_words & {'Reliable', 'Unreliable'}:
+                errors.append(f'{rel}: RPC {func} must be marked Reliable or Unreliable')
+            for param in split_params(params):
+                if re.search(r'(?<!const )\b\w+(?:<[^>]*>)?\s*&\s*\w+\s*$', param.strip()) and not param.strip().startswith('const'):
+                    errors.append(f'{rel}: RPC {func} has a non-const reference parameter ({param.strip()})')
     for match in re.finditer(r'UPROPERTY\s*\(([^)]*\bReplicated(?:Using\s*=\s*\w+)?\b[^)]*)\)\s*([^;]+);', text):
         decl = match.group(2).strip()
         prop = re.search(r'(\w+)\s*(?:=.*)?$', decl)

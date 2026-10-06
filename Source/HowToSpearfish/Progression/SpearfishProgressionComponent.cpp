@@ -206,7 +206,7 @@ TArray<const FSpearfishRestaurantUpgradeDef*> USpearfishProgressionComponent::Ge
 	TArray<const FSpearfishRestaurantUpgradeDef*> Defs;
 	if (const USpearfishDataRegistry* Registry = USpearfishDataRegistry::Get(this))
 	{
-		for (const FName Id : OwnedUpgrades)
+		for (const FName& Id : OwnedUpgrades)
 		{
 			if (const FSpearfishRestaurantUpgradeDef* Def = Registry->FindUpgrade(Id))
 			{

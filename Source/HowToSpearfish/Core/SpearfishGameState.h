@@ -41,7 +41,7 @@ public:
 	const TArray<FName>& GetRevealedRumors() const { return RevealedRumors; }
 	const FSpearfishDayStats& GetTodayStats() const { return TodayStats; }
 
-	ASpearfishPlayerState* FindPlayerWithRole(ESpearfishRole Role) const;
+	ASpearfishPlayerState* FindPlayerWithRole(ESpearfishRole WantedRole) const;
 	ASpearfishCharacter* GetDiverCharacter() const;
 
 	/** Server time in seconds as float (UI/patience timers). */

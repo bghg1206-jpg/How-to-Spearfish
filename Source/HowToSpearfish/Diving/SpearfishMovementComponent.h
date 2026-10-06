@@ -31,8 +31,9 @@ public:
 	void SetWantsToSprint(bool bInWantsToSprint) { bWantsToSprint = bInWantsToSprint; }
 	bool WantsToSprint() const { return bWantsToSprint; }
 
-	bool IsSwimming() const { return MovementMode == MOVE_Flying; }
-	bool IsSprintSwimming() const { return IsSwimming() && bWantsToSprint && Velocity.SizeSquared() > 100.0; }
+	/** In the sea (swimming uses MOVE_Flying; the engine's IsSwimming() means MOVE_Swimming and stays untouched). */
+	bool IsInSea() const { return MovementMode == MOVE_Flying; }
+	bool IsSprintSwimming() const { return IsInSea() && bWantsToSprint && Velocity.SizeSquared() > 100.0; }
 	bool IsAtSurface() const;
 	float GetDepthMeters() const;
 	float GetSwimSpeedFraction() const;

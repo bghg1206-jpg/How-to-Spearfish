@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Rules/SpearfishRulesTypes.h"
+#include "UObject/ObjectPtr.h"
 #include "SpearfishOrderTypes.generated.h"
 
 class APlayerState;
