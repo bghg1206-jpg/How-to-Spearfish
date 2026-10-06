@@ -20,9 +20,9 @@ public:
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-	ESpearfishRole GetRole() const { return Role; }
-	bool IsDiver() const { return Role == ESpearfishRole::Diver; }
-	bool IsChef() const { return Role == ESpearfishRole::Chef; }
+	ESpearfishRole GetRole() const { return SpearfishRole; }
+	bool IsDiver() const { return SpearfishRole == ESpearfishRole::Diver; }
+	bool IsChef() const { return SpearfishRole == ESpearfishRole::Chef; }
 	int32 GetSeatIndex() const { return SeatIndex; }
 	FName GetPlayerKey() const { return PlayerKey; }
 	bool IsInBed() const { return bInBed; }
@@ -49,7 +49,7 @@ private:
 	void OnRep_Role();
 
 	UPROPERTY(ReplicatedUsing = OnRep_Role)
-	ESpearfishRole Role = ESpearfishRole::None;
+	ESpearfishRole SpearfishRole = ESpearfishRole::None;
 
 	UPROPERTY(Replicated)
 	int32 SeatIndex = INDEX_NONE;

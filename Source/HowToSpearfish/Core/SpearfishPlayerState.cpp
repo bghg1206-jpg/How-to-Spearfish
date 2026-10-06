@@ -11,7 +11,7 @@ ASpearfishPlayerState::ASpearfishPlayerState()
 void ASpearfishPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ASpearfishPlayerState, Role);
+	DOREPLIFETIME(ASpearfishPlayerState, SpearfishRole);
 	DOREPLIFETIME(ASpearfishPlayerState, SeatIndex);
 	DOREPLIFETIME(ASpearfishPlayerState, PlayerKey);
 	DOREPLIFETIME(ASpearfishPlayerState, bInBed);
@@ -26,11 +26,11 @@ ASpearfishCharacter* ASpearfishPlayerState::GetSpearfishCharacter() const
 
 void ASpearfishPlayerState::SetRole(ESpearfishRole NewRole)
 {
-	if (Role == NewRole)
+	if (SpearfishRole == NewRole)
 	{
 		return;
 	}
-	Role = NewRole;
+	SpearfishRole = NewRole;
 	OnRep_Role();
 	ForceNetUpdate();
 }
@@ -58,7 +58,7 @@ void ASpearfishPlayerState::CopyProperties(APlayerState* PlayerState)
 	Super::CopyProperties(PlayerState);
 	if (ASpearfishPlayerState* Target = Cast<ASpearfishPlayerState>(PlayerState))
 	{
-		Target->Role = Role;
+		Target->SpearfishRole = SpearfishRole;
 		Target->SeatIndex = SeatIndex;
 		Target->PlayerKey = PlayerKey;
 	}
@@ -66,5 +66,5 @@ void ASpearfishPlayerState::CopyProperties(APlayerState* PlayerState)
 
 void ASpearfishPlayerState::OnRep_Role()
 {
-	OnRoleChanged.Broadcast(Role);
+	OnRoleChanged.Broadcast(SpearfishRole);
 }
