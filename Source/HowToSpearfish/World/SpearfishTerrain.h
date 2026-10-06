@@ -7,6 +7,27 @@
 #include "CoreMinimal.h"
 #include "SpearfishTerrain.generated.h"
 
+/**
+ * Triangle winding for procedural meshes. Unreal renders triangle (A, B, C) front-facing toward
+ * (C - A) x (B - A), i.e. opposite to (B - A) x (C - A). Two engine references agree:
+ * UKismetProceduralMeshLibrary::GenerateBoxMesh builds its +Z face from (-x,+y), (+x,+y), (+x,-y), (-x,-y)
+ * through ConvertQuadToTris (0,1,3 / 1,2,3), and CalculateTangentsForMesh derives the face normal as
+ * (P1 - P2) ^ (P0 - P2). Covered by the Terrain.Winding test.
+ */
+namespace SpearfishMeshWinding
+{
+	inline FVector FrontNormal(const FVector& A, const FVector& B, const FVector& C)
+	{
+		return (C - A) ^ (B - A);
+	}
+
+	/** True when (A, B, C) must be emitted as (A, C, B) to face Facing. */
+	inline bool NeedsSwap(const FVector& A, const FVector& B, const FVector& C, const FVector& Facing)
+	{
+		return FVector::DotProduct(FrontNormal(A, B, C), Facing) < 0.0;
+	}
+}
+
 USTRUCT(BlueprintType)
 struct FSpearfishTerrainParams
 {

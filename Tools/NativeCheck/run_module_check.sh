@@ -72,5 +72,6 @@ echo "$RESULTS" | sed '/^$/d' | sort
 FAILS=$(echo "$RESULTS" | grep -c '^FAIL' || true)
 ERRORS=$(cat "$BUILD"/logs/*.log 2>/dev/null | grep -cE 'error:|warning:' || true)
 python3 "$ROOT/Tools/NativeCheck/lint_shadow.py" "$CXX" "$MODULE" "${FLAGS[@]}" || SHADOW_FAILED=1
+python3 "$ROOT/Tools/NativeCheck/lint_random.py" "$MODULE" || RANDOM_FAILED=1
 echo "module check: ${#CPPS[@]} sources, ${#HEADERS[@]} headers, $FAILS failing unit(s), $ERRORS diagnostic(s). Logs: $BUILD/logs"
-[ "$FAILS" -eq 0 ] && [ -z "${UHT_FAILED:-}" ] && [ -z "${SHADOW_FAILED:-}" ]
+[ "$FAILS" -eq 0 ] && [ -z "${UHT_FAILED:-}" ] && [ -z "${SHADOW_FAILED:-}" ] && [ -z "${RANDOM_FAILED:-}" ]

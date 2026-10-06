@@ -1,5 +1,7 @@
 #include "World/SpearfishTerrain.h"
 
+#include "Rules/SpearfishRulesTypes.h"
+
 namespace SpearfishTerrainPrivate
 {
 	inline float Smooth01(float X)
@@ -27,7 +29,7 @@ void FSpearfishTerrain::Initialize(const FSpearfishTerrainParams& InParams, int3
 	FRandomStream Rng(Seed);
 	const float H = Params.HalfExtentCm;
 	Layout = FSpearfishTerrainLayout();
-	Layout.IslandCenter = FVector2D(H * (-0.62f + Rng.FRandRange(-0.05f, 0.05f)), H * (-0.62f + Rng.FRandRange(-0.05f, 0.05f)));
+	Layout.IslandCenter = (FVector2D(-0.62, -0.62) + SpearfishRandom::Vector2D(Rng, -0.05f, 0.05f)) * static_cast<double>(H);
 	Layout.IslandRadiusCm = 0.22f * H;
 	Layout.IslandPeakCm = 650.f + Rng.FRandRange(0.f, 250.f);
 	Layout.BeachWidthCm = 0.12f * H;

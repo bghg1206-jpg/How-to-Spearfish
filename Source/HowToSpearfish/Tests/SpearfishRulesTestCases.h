@@ -31,6 +31,9 @@ public:
 
 namespace SpearfishRulesTests
 {
+	/** See TerrainMatchesGoldenLayout. */
+	constexpr uint32 GoldenCoralCoveFingerprint = 3070461191u;
+
 	inline FSpearfishItem MakeFish(int32 Id, const TCHAR* Species, const TCHAR* Category, float Length, float Weight, int32 Value, float Quality = 0.8f)
 	{
 		FSpearfishItem Item;
@@ -862,6 +865,83 @@ namespace SpearfishRulesTests
 		SF_CHECK(T, MaxStep < 200.f);
 	}
 
+	/**
+	 * Quantized fingerprint of a generated layout (heights to the centimetre, POIs to 10 cm). Every machine
+	 * builds the static world locally, so all compilers and platforms must agree on it.
+	 */
+	inline uint32 TerrainFingerprint(const FSpearfishTerrain& Terrain)
+	{
+		uint32 Hash = 2166136261u;
+		auto Mix = [&Hash](int64 Value)
+		{
+			Hash = (Hash ^ static_cast<uint32>(Value & 0xffffffff)) * 16777619u;
+			Hash = (Hash ^ static_cast<uint32>((Value >> 32) & 0xffffffff)) * 16777619u;
+		};
+		const FSpearfishTerrainLayout& Layout = Terrain.GetLayout();
+		Mix(FMath::RoundToInt(Layout.IslandCenter.X / 10.0));
+		Mix(FMath::RoundToInt(Layout.IslandCenter.Y / 10.0));
+		Mix(FMath::RoundToInt(Layout.BoatStart.X / 10.0));
+		Mix(FMath::RoundToInt(Layout.BoatStart.Y / 10.0));
+		Mix(Layout.POIs.Num());
+		for (const FSpearfishPOI& POI : Layout.POIs)
+		{
+			Mix(static_cast<int64>(POI.Type));
+			Mix(FMath::RoundToInt(POI.Location.X / 10.0));
+			Mix(FMath::RoundToInt(POI.Location.Y / 10.0));
+		}
+		for (int32 X = -8; X <= 8; ++X)
+		{
+			for (int32 Y = -8; Y <= 8; ++Y)
+			{
+				Mix(FMath::RoundToInt(Terrain.GetSeabedZ(X * 1100.f + 37.f, Y * 1100.f - 53.f)));
+			}
+		}
+		return Hash;
+	}
+
+	inline void TerrainMatchesGoldenLayout(FSpearfishRulesTestContext& T)
+	{
+		// Recorded with clang and gcc on x86-64. A mismatch means the world generator now produces a
+		// different world: either an intended change (re-record the value) or a determinism bug such as
+		// several random draws inside one argument list.
+		FSpearfishTerrain Terrain;
+		Terrain.Initialize(CoralCoveParams(), 1337);
+		const uint32 Fingerprint = TerrainFingerprint(Terrain);
+		SF_CHECK(T, Fingerprint == GoldenCoralCoveFingerprint);
+	}
+
+	inline void TerrainWindingMatchesEngineConvention(FSpearfishRulesTestContext& T)
+	{
+		// UKismetProceduralMeshLibrary::GenerateBoxMesh, +Z face: these triangles render facing up.
+		const double R = 50.0;
+		const FVector V0(-R, R, R);
+		const FVector V1(R, R, R);
+		const FVector V2(R, -R, R);
+		const FVector V3(-R, -R, R);
+		SF_CHECK(T, SpearfishMeshWinding::FrontNormal(V0, V1, V3).Z > 0.0);
+		SF_CHECK(T, SpearfishMeshWinding::FrontNormal(V1, V2, V3).Z > 0.0);
+		SF_CHECK(T, !SpearfishMeshWinding::NeedsSwap(V0, V1, V3, FVector::UpVector));
+		SF_CHECK(T, SpearfishMeshWinding::NeedsSwap(V0, V3, V1, FVector::UpVector));
+
+		// CalculateTangentsForMesh: TriNormal = (P1 - P2) ^ (P0 - P2) points the same way.
+		const FVector EngineNormal = (V1 - V3) ^ (V0 - V3);
+		SF_CHECK(T, FVector::DotProduct(EngineNormal, SpearfishMeshWinding::FrontNormal(V0, V1, V3)) > 0.0);
+
+		// Any grid triangle, after orientation, faces up regardless of the order it was emitted in.
+		FRandomStream Rng(5);
+		for (int32 Index = 0; Index < 200; ++Index)
+		{
+			FVector P[3];
+			for (FVector& Point : P)
+			{
+				Point = SpearfishRandom::Vector(Rng, -500.f, 500.f, -40.f, 40.f);
+			}
+			const bool bSwap = SpearfishMeshWinding::NeedsSwap(P[0], P[1], P[2], FVector::UpVector);
+			const FVector Front = bSwap ? SpearfishMeshWinding::FrontNormal(P[0], P[2], P[1]) : SpearfishMeshWinding::FrontNormal(P[0], P[1], P[2]);
+			SF_CHECK(T, Front.Z >= 0.0);
+		}
+	}
+
 	// ------------------------------------------------------------------------------------- Events
 
 	inline void EventsRespectDayCapAndGroups(FSpearfishRulesTestContext& T)
@@ -957,6 +1037,8 @@ namespace SpearfishRulesTests
 		Cases.Add({ TEXT("Fish.Mind"), &FishMindDecisions });
 		Cases.Add({ TEXT("Terrain.Deterministic"), &TerrainIsDeterministic });
 		Cases.Add({ TEXT("Terrain.Playable"), &TerrainLayoutIsPlayable });
+		Cases.Add({ TEXT("Terrain.Winding"), &TerrainWindingMatchesEngineConvention });
+		Cases.Add({ TEXT("Terrain.GoldenLayout"), &TerrainMatchesGoldenLayout });
 		Cases.Add({ TEXT("Events.DayCapGroups"), &EventsRespectDayCapAndGroups });
 		Cases.Add({ TEXT("Events.Chance"), &EventsFireAtTheirChance });
 		return Cases;

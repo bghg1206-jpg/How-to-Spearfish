@@ -235,6 +235,38 @@ struct FSpearfishProgressSnapshot
 	TArray<FName> Owned;
 };
 
+/**
+ * Sequenced random draws. C++ leaves the evaluation order of function arguments unspecified, so
+ * FVector(Rng.FRand(), Rng.FRand(), ...) assigns the draws to different components on different compilers
+ * (gcc and clang disagree). Static scenery is generated locally on every machine, so any statement with
+ * more than one draw would build a different world per platform. Draw through these helpers instead.
+ */
+namespace SpearfishRandom
+{
+	inline FVector2D Vector2D(const FRandomStream& Rng, float Min, float Max)
+	{
+		const float X = Rng.FRandRange(Min, Max);
+		const float Y = Rng.FRandRange(Min, Max);
+		return FVector2D(X, Y);
+	}
+
+	inline FVector Vector(const FRandomStream& Rng, float MinXY, float MaxXY, float MinZ, float MaxZ)
+	{
+		const float X = Rng.FRandRange(MinXY, MaxXY);
+		const float Y = Rng.FRandRange(MinXY, MaxXY);
+		const float Z = Rng.FRandRange(MinZ, MaxZ);
+		return FVector(X, Y, Z);
+	}
+
+	inline FRotator Rotator(const FRandomStream& Rng, float PitchMin, float PitchMax, float YawMin, float YawMax, float RollMin, float RollMax)
+	{
+		const float Pitch = Rng.FRandRange(PitchMin, PitchMax);
+		const float Yaw = Rng.FRandRange(YawMin, YawMax);
+		const float Roll = Rng.FRandRange(RollMin, RollMax);
+		return FRotator(Pitch, Yaw, Roll);
+	}
+}
+
 namespace SpearfishMath
 {
 	/** Linear remap with clamping. Float-only to avoid UE5 float/double template deduction issues. */

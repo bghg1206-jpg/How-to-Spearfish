@@ -6,7 +6,7 @@
 USpearfishSettings::USpearfishSettings()
 {
 	CategoryName = TEXT("Game");
-	SectionName = TEXT("How to Spearfish");
+	SectionName = TEXT("SpearfishSettings");
 
 	// Materials produced by Tools/Editor/bootstrap_content.py. Missing assets fall back gracefully.
 	BaseMaterial = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(TEXT("/Game/Materials/M_Spearfish_Base.M_Spearfish_Base")));

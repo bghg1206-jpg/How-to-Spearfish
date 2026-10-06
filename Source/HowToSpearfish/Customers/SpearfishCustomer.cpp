@@ -90,7 +90,12 @@ void ASpearfishCustomer::BuildBody()
 	const FLinearColor Outfit = Def ? Def->OutfitColor : FLinearColor(0.8f, 0.3f, 0.3f);
 	const FLinearColor Skins[] = { FLinearColor(0.95f, 0.78f, 0.62f), FLinearColor(0.75f, 0.55f, 0.4f), FLinearColor(0.5f, 0.35f, 0.25f), FLinearColor(0.35f, 0.24f, 0.18f) };
 	const FLinearColor Skin = Skins[Rng.RandRange(0, 3)];
-	const FLinearColor Pants(Rng.FRandRange(0.1f, 0.4f), Rng.FRandRange(0.1f, 0.4f), Rng.FRandRange(0.2f, 0.5f));
+	// One draw per statement: argument evaluation order differs between compilers, and every machine
+	// dresses this guest locally from the replicated seed.
+	const float PantsR = Rng.FRandRange(0.1f, 0.4f);
+	const float PantsG = Rng.FRandRange(0.1f, 0.4f);
+	const float PantsB = Rng.FRandRange(0.2f, 0.5f);
+	const FLinearColor Pants(PantsR, PantsG, PantsB);
 
 	// Origin at the feet.
 	Visuals->AddPart(this, Root, ESpearfishShape::Cylinder, FVector(0, 0, 40), FRotator::ZeroRotator, FVector(30, 26, 80), Pants, false);

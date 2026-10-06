@@ -1,9 +1,11 @@
 #include "Loot/SpearfishLootPickup.h"
 
 #include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Core/SpearfishGameTypes.h"
 #include "Data/SpearfishDataRegistry.h"
 #include "Diving/SpearfishCharacter.h"
+#include "Engine/StaticMesh.h"
 #include "HowToSpearfish.h"
 #include "Inventory/SpearfishCatchService.h"
 #include "Net/UnrealNetwork.h"
@@ -69,6 +71,19 @@ void ASpearfishLootPickup::BuildVisuals()
 	bGlints = Def->Rarity >= ESpearfishRarity::Rare;
 	const FLinearColor Color = Def->Color;
 	const float Glow = bGlints ? 1.5f : 0.f;
+
+	// Authored art wins over the placeholder parts.
+	if (UStaticMesh* Mesh = Def->Mesh.IsNull() ? nullptr : Def->Mesh.LoadSynchronous())
+	{
+		UStaticMeshComponent* Part = NewObject<UStaticMeshComponent>(this);
+		Part->SetStaticMesh(Mesh);
+		USpearfishVisualSubsystem::ConfigureCollision(Part, false);
+		Part->SetupAttachment(Pivot);
+		Part->RegisterComponent();
+		AddInstanceComponent(Part);
+		SetActorTickEnabled(bGlints);
+		return;
+	}
 
 	switch (Def->Category)
 	{

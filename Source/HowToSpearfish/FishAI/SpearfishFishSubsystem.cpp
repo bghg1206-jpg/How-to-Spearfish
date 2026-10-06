@@ -9,6 +9,7 @@
 #include "FishAI/SpearfishFish.h"
 #include "HowToSpearfish.h"
 #include "Progression/SpearfishJournalComponent.h"
+#include "Rules/SpearfishRulesTypes.h"
 #include "World/SpearfishOceanSubsystem.h"
 
 #define LOCTEXT_NAMESPACE "SpearfishFishSubsystem"
@@ -145,7 +146,7 @@ void USpearfishFishSubsystem::TickSchools(float DeltaTime)
 
 		if (Now() > School.RetargetTime || FVector::DistSquared(School.Center, School.Target) < FMath::Square(250.0))
 		{
-			FVector Target = School.Home + FVector(Stream.FRandRange(-School.Radius, School.Radius), Stream.FRandRange(-School.Radius, School.Radius), Stream.FRandRange(-250.f, 250.f));
+			FVector Target = School.Home + SpearfishRandom::Vector(Stream, -School.Radius, School.Radius, -250.f, 250.f);
 			if (Ocean)
 			{
 				const double Top = Ocean->GetSeaLevel() - 150.0;

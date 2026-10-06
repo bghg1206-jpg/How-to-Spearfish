@@ -7,6 +7,7 @@
 #include "DayNight/SpearfishSkyController.h"
 #include "GameFramework/Pawn.h"
 #include "Materials/MaterialInterface.h"
+#include "Rules/SpearfishRulesTypes.h"
 #include "World/SpearfishOceanSubsystem.h"
 #include "World/SpearfishVisualSubsystem.h"
 
@@ -59,7 +60,7 @@ void USpearfishUnderwaterViewComponent::EnsureSnow()
 	for (int32 Index = 0; Index < SpearfishUnderwaterPrivate::SnowCount; ++Index)
 	{
 		const float Half = SpearfishUnderwaterPrivate::SnowBox * 0.5f;
-		SnowOffsets.Add(FVector(Rng.FRandRange(-Half, Half), Rng.FRandRange(-Half, Half), Rng.FRandRange(-Half, Half)));
+		SnowOffsets.Add(SpearfishRandom::Vector(Rng, -Half, Half, -Half, Half));
 		const float Size = Rng.FRandRange(0.25f, 0.9f) / 100.f;
 		Snow->AddInstance(FTransform(FRotator::ZeroRotator, FVector::ZeroVector, FVector(Size)), true);
 	}

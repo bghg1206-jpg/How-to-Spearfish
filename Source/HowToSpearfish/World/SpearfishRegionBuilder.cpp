@@ -33,11 +33,10 @@ namespace SpearfishRegionPrivate
 		return HashCombine(HashCombine(static_cast<uint32>(Shape), static_cast<uint32>(Mode)), HashCombine(HashCombine(Q.R, Q.G), Q.B));
 	}
 
-	/** Triangle with its face oriented toward Up (see Docs/ARCHITECTURE.md, procedural winding). */
+	/** Triangle with its front face toward Up (winding rule: SpearfishMeshWinding, Docs/ARCHITECTURE.md). */
 	void AddOrientedTriangle(TArray<int32>& Triangles, const TArray<FVector>& Vertices, int32 A, int32 B, int32 C, const FVector& Up)
 	{
-		const FVector Normal = (Vertices[B] - Vertices[A]) ^ (Vertices[C] - Vertices[A]);
-		if (FVector::DotProduct(Normal, Up) >= 0.0)
+		if (!SpearfishMeshWinding::NeedsSwap(Vertices[A], Vertices[B], Vertices[C], Up))
 		{
 			Triangles.Add(A);
 			Triangles.Add(B);
@@ -345,8 +344,10 @@ void ASpearfishRegionBuilder::ScatterScenery()
 				const float Size = Rng.FRandRange(120.f, 420.f) * (Biome == Wall ? 1.4f : 1.f);
 				const FLinearColor Tint = Region->Palette.Rock * Rng.FRandRange(0.8f, 1.15f);
 				const FLinearColor Quantized(FMath::GridSnap(Tint.R, 0.05f), FMath::GridSnap(Tint.G, 0.05f), FMath::GridSnap(Tint.B, 0.05f));
-				const FTransform Rock(FRotator(Rng.FRandRange(-20.f, 20.f), Rng.FRandRange(0.f, 360.f), Rng.FRandRange(-20.f, 20.f)),
-					Ground + Normal * (Size * 0.2), FVector(Size, Size * Rng.FRandRange(0.6f, 1.2f), Size * Rng.FRandRange(0.4f, 0.8f)) / 100.0);
+				const FRotator RockRotation = SpearfishRandom::Rotator(Rng, -20.f, 20.f, 0.f, 360.f, -20.f, 20.f);
+				const float RockWidth = Size * Rng.FRandRange(0.6f, 1.2f);
+				const float RockHeight = Size * Rng.FRandRange(0.4f, 0.8f);
+				const FTransform Rock(RockRotation, Ground + Normal * (Size * 0.2), FVector(Size, RockWidth, RockHeight) / 100.0);
 				GetInstancer(Rng.FRand() < 0.6f ? Sphere : Cube, Quantized, FullCollision)->AddInstance(Rock, true);
 				if (Fish)
 				{
@@ -361,7 +362,7 @@ void ASpearfishRegionBuilder::ScatterScenery()
 				for (int32 Piece = 0; Piece < Pieces; ++Piece)
 				{
 					const FLinearColor Color = CoralColors[Rng.RandRange(0, CoralColors.Num() - 1)];
-					const FVector Offset(Rng.FRandRange(-160.f, 160.f), Rng.FRandRange(-160.f, 160.f), 0.0);
+					const FVector Offset = SpearfishRandom::Vector(Rng, -160.f, 160.f, 0.f, 0.f);
 					const FVector Base(X + Offset.X, Y + Offset.Y, Terrain.GetSeabedZ(X + static_cast<float>(Offset.X), Y + static_cast<float>(Offset.Y)));
 					const int32 Kind = Rng.RandRange(0, 3);
 					if (Kind == 0)
@@ -370,7 +371,7 @@ void ASpearfishRegionBuilder::ScatterScenery()
 						for (int32 Branch = 0; Branch < 4; ++Branch)
 						{
 							const float Height = Rng.FRandRange(50.f, 130.f);
-							const FRotator Tilt(Rng.FRandRange(-35.f, 35.f), Rng.FRandRange(0.f, 360.f), Rng.FRandRange(-35.f, 35.f));
+							const FRotator Tilt = SpearfishRandom::Rotator(Rng, -35.f, 35.f, 0.f, 360.f, -35.f, 35.f);
 							GetInstancer(Cone, Color, LineCollision)->AddInstance(FTransform(Tilt, Base + FVector(0, 0, Height * 0.45f), FVector(14.f, 14.f, Height) / 100.0), true);
 						}
 					}
@@ -382,7 +383,8 @@ void ASpearfishRegionBuilder::ScatterScenery()
 					else if (Kind == 2)
 					{
 						const float Size = Rng.FRandRange(70.f, 160.f);
-						GetInstancer(Cube, Color, LineCollision)->AddInstance(FTransform(FRotator(0.f, Rng.FRandRange(0.f, 360.f), Rng.FRandRange(-10.f, 10.f)), Base + FVector(0, 0, Size * 0.5f), FVector(4.f, Size, Size) / 100.0), true);
+						const FRotator FanRotation = SpearfishRandom::Rotator(Rng, 0.f, 0.f, 0.f, 360.f, -10.f, 10.f);
+						GetInstancer(Cube, Color, LineCollision)->AddInstance(FTransform(FanRotation, Base + FVector(0, 0, Size * 0.5f), FVector(4.f, Size, Size) / 100.0), true);
 					}
 					else
 					{
@@ -405,9 +407,10 @@ void ASpearfishRegionBuilder::ScatterScenery()
 				for (int32 Blade = 0; Blade < 14; ++Blade)
 				{
 					const float Height = Rng.FRandRange(30.f, 80.f);
-					const FVector Base(X + Rng.FRandRange(-150.f, 150.f), Y + Rng.FRandRange(-150.f, 150.f), 0.0);
+					const FVector Base = FVector(X, Y, 0.f) + SpearfishRandom::Vector(Rng, -150.f, 150.f, 0.f, 0.f);
 					const FVector Position(Base.X, Base.Y, Terrain.GetSeabedZ(static_cast<float>(Base.X), static_cast<float>(Base.Y)) + Height * 0.5f);
-					GetInstancer(Cube, Quantized, NoCollision)->AddInstance(FTransform(FRotator(Rng.FRandRange(-12.f, 12.f), Rng.FRandRange(0.f, 360.f), 0.f), Position, FVector(1.5f, 5.f, Height) / 100.0), true);
+					const FRotator BladeRotation = SpearfishRandom::Rotator(Rng, -12.f, 12.f, 0.f, 360.f, 0.f, 0.f);
+					GetInstancer(Cube, Quantized, NoCollision)->AddInstance(FTransform(BladeRotation, Position, FVector(1.5f, 5.f, Height) / 100.0), true);
 				}
 			}
 
@@ -418,12 +421,14 @@ void ASpearfishRegionBuilder::ScatterScenery()
 				for (int32 Stalk = 0; Stalk < Stalks; ++Stalk)
 				{
 					const float Height = (DepthM - 1.f) * 100.f * Rng.FRandRange(0.7f, 0.95f);
-					const FVector Base(X + Rng.FRandRange(-120.f, 120.f), Y + Rng.FRandRange(-120.f, 120.f), Z);
-					GetInstancer(Cylinder, Region->Palette.Vegetation, LineCollision)->AddInstance(FTransform(FRotator(Rng.FRandRange(-6.f, 6.f), 0.f, Rng.FRandRange(-6.f, 6.f)), Base + FVector(0, 0, Height * 0.5f), FVector(7.f, 7.f, Height) / 100.0), true);
+					const FVector Base = FVector(X, Y, Z) + SpearfishRandom::Vector(Rng, -120.f, 120.f, 0.f, 0.f);
+					const FRotator StalkLean = SpearfishRandom::Rotator(Rng, -6.f, 6.f, 0.f, 0.f, -6.f, 6.f);
+					GetInstancer(Cylinder, Region->Palette.Vegetation, LineCollision)->AddInstance(FTransform(StalkLean, Base + FVector(0, 0, Height * 0.5f), FVector(7.f, 7.f, Height) / 100.0), true);
 					for (int32 Leaf = 0; Leaf < 5; ++Leaf)
 					{
 						const float LeafZ = Height * (0.3f + 0.14f * Leaf);
-						GetInstancer(Cube, Region->Palette.Vegetation * 1.2f, NoCollision)->AddInstance(FTransform(FRotator(Rng.FRandRange(-30.f, 30.f), Rng.FRandRange(0.f, 360.f), 0.f), Base + FVector(0, 0, LeafZ), FVector(60.f, 18.f, 1.5f) / 100.0), true);
+						const FRotator LeafRotation = SpearfishRandom::Rotator(Rng, -30.f, 30.f, 0.f, 360.f, 0.f, 0.f);
+						GetInstancer(Cube, Region->Palette.Vegetation * 1.2f, NoCollision)->AddInstance(FTransform(LeafRotation, Base + FVector(0, 0, LeafZ), FVector(60.f, 18.f, 1.5f) / 100.0), true);
 					}
 				}
 				if (Fish)
@@ -444,7 +449,7 @@ void ASpearfishRegionBuilder::ScatterScenery()
 		for (int32 Piece = 0; Piece < 9; ++Piece)
 		{
 			const FLinearColor Color = CoralColors[Rng.RandRange(0, CoralColors.Num() - 1)];
-			const FVector Offset(Rng.FRandRange(-260.f, 260.f), Rng.FRandRange(-260.f, 260.f), 0.0);
+			const FVector Offset = SpearfishRandom::Vector(Rng, -260.f, 260.f, 0.f, 0.f);
 			const float Size = Rng.FRandRange(120.f, 260.f);
 			const FVector Base = POI.Location + Offset;
 			const float BaseZ = Terrain.GetSeabedZ(static_cast<float>(Base.X), static_cast<float>(Base.Y));
@@ -530,7 +535,8 @@ void ASpearfishRegionBuilder::BuildCave(const FSpearfishPOI& POI)
 			GetInstancer(Sphere, RockColor, FullCollision)->AddInstance(FTransform(FRotator(0.f, Rng.FRandRange(0.f, 360.f), 0.f),
 				FVector(WallBase.X, WallBase.Y, FloorZ + 120.f), FVector(Size, Size * 0.8f, 320.f) / 100.0), true);
 		}
-		GetInstancer(Cube, RockColor, FullCollision)->AddInstance(FTransform(FRotator(Rng.FRandRange(-6.f, 6.f), POI.Yaw, Rng.FRandRange(-6.f, 6.f)),
+		const FRotator RoofTilt = SpearfishRandom::Rotator(Rng, -6.f, 6.f, POI.Yaw, POI.Yaw, -6.f, 6.f);
+		GetInstancer(Cube, RockColor, FullCollision)->AddInstance(FTransform(RoofTilt,
 			FVector(Center.X, Center.Y, FloorZ + 330.f), FVector(260.f, 720.f, 90.f) / 100.0), true);
 		GetInstancer(Sphere, RockColor * 1.1f, FullCollision)->AddInstance(FTransform(FRotator::ZeroRotator,
 			FVector(Center.X, Center.Y, FloorZ + 420.f), FVector(380.f, 680.f, 160.f) / 100.0), true);
@@ -646,7 +652,11 @@ void ASpearfishRegionBuilder::SpawnLocalActors()
 		ASpearfishAmbientSchool* School = World->SpawnActor<ASpearfishAmbientSchool>(ASpearfishAmbientSchool::StaticClass(), FTransform(Home), Params);
 		if (School)
 		{
-			School->Configure(Colors[Rng.RandRange(0, Colors.Num() - 1)], Rng.RandRange(25, 55), Rng.FRandRange(6.f, 12.f), Rng.RandRange(1, 99999));
+			const FLinearColor SchoolColor = Colors[Rng.RandRange(0, Colors.Num() - 1)];
+			const int32 SchoolCount = Rng.RandRange(25, 55);
+			const float SchoolFishLength = Rng.FRandRange(6.f, 12.f);
+			const int32 SchoolSeed = Rng.RandRange(1, 99999);
+			School->Configure(SchoolColor, SchoolCount, SchoolFishLength, SchoolSeed);
 			LocalActors.Add(School);
 			++Spawned;
 		}
@@ -804,7 +814,7 @@ void ASpearfishRegionBuilder::SpawnDailyContent(int32 Day, int32 DaySeed)
 			// Salvage crates scattered around the wreck - pull them loose with the speargun.
 			for (int32 Crate = 0; Crate < 3; ++Crate)
 			{
-				const FVector Offset(Rng.FRandRange(-700.f, 700.f), Rng.FRandRange(-700.f, 700.f), 0.0);
+				const FVector Offset = SpearfishRandom::Vector(Rng, -700.f, 700.f, 0.f, 0.f);
 				const FVector Location = POI.Location + Offset;
 				const float GroundZ = Ocean->GetTerrain().GetSeabedZ(static_cast<float>(Location.X), static_cast<float>(Location.Y));
 				const FTransform Transform(FRotator(0.f, Rng.FRandRange(0.f, 360.f), 0.f), FVector(Location.X, Location.Y, GroundZ + 60.f));

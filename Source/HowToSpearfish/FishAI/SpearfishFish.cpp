@@ -11,6 +11,7 @@
 #include "FishAI/SpearfishFishSubsystem.h"
 #include "HowToSpearfish.h"
 #include "Net/UnrealNetwork.h"
+#include "Rules/SpearfishRulesTypes.h"
 #include "Speargun/SpeargunComponent.h"
 #include "World/SpearfishOceanSubsystem.h"
 
@@ -435,7 +436,7 @@ void ASpearfishFish::Think()
 	if (FVector::DistSquared(Location, WanderTarget) < FMath::Square(150.0) || Stream.FRand() < 0.02f)
 	{
 		const float Radius = Species->Archetype == ESpearfishFishArchetype::Pelagic ? 2500.f : 900.f;
-		WanderTarget = Home + FVector(Stream.FRandRange(-Radius, Radius), Stream.FRandRange(-Radius, Radius), Stream.FRandRange(-200.f, 200.f));
+		WanderTarget = Home + SpearfishRandom::Vector(Stream, -Radius, Radius, -200.f, 200.f);
 	}
 }
 

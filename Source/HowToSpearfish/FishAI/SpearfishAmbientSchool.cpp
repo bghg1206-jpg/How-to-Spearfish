@@ -4,6 +4,7 @@
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
+#include "Rules/SpearfishRulesTypes.h"
 #include "World/SpearfishOceanSubsystem.h"
 #include "World/SpearfishVisualSubsystem.h"
 
@@ -88,8 +89,9 @@ void ASpearfishAmbientSchool::Configure(const FLinearColor& Color, int32 Count, 
 	TailTransforms.SetNum(Count);
 	for (FBoid& Boid : Boids)
 	{
-		Boid.Position = Home + Stream.VRand() * static_cast<double>(Stream.FRandRange(0.f, 150.f));
-		Boid.Velocity = FVector(Stream.FRandRange(-1.f, 1.f), Stream.FRandRange(-1.f, 1.f), 0.f).GetSafeNormal() * static_cast<double>(Speed);
+		const FVector Direction = Stream.VRand();
+		Boid.Position = Home + Direction * static_cast<double>(Stream.FRandRange(0.f, 150.f));
+		Boid.Velocity = SpearfishRandom::Vector(Stream, -1.f, 1.f, 0.f, 0.f).GetSafeNormal() * static_cast<double>(Speed);
 		Boid.Phase = Stream.FRandRange(0.f, 6.28f);
 	}
 	PushTransforms();
@@ -141,7 +143,7 @@ void ASpearfishAmbientSchool::Simulate(float DeltaSeconds, const FVector& Threat
 	if (WanderTimer <= 0.f)
 	{
 		WanderTimer = Stream.FRandRange(3.f, 6.f);
-		Wander = FVector(Stream.FRandRange(-HomeRadius, HomeRadius), Stream.FRandRange(-HomeRadius, HomeRadius), Stream.FRandRange(-120.f, 120.f));
+		Wander = SpearfishRandom::Vector(Stream, -HomeRadius, HomeRadius, -120.f, 120.f);
 	}
 	PanicTimer = FMath::Max(0.f, PanicTimer - DeltaSeconds);
 
