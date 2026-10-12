@@ -52,3 +52,7 @@ Config/*.local.ini
 Config/Secrets*.ini
 *.pem
 *.p12
+
+# MemoryReader build output
+Tools/MemoryReader/memreader
+Tools/MemoryReader/practice_target

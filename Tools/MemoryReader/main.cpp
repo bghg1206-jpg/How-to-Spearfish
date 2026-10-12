@@ -1,240 +1,218 @@
-// MemoryReader - small READ-ONLY learning tool for understanding Base + Offset.
+// MemoryReader - READ-ONLY Linux learning tool for understanding Base + Offset.
 //
-// It finds a running process, finds the base address of one of its modules and
-// follows a pointer chain of offsets to print one value. It never writes to
-// another process's memory.
+// Finds a running process, finds the load address of one of its modules
+// (from /proc/<pid>/maps) and follows a chain of offsets (via /proc/<pid>/mem)
+// to print one value. It never writes to another process.
 //
-// Usage:
-//   memreader <process.exe> <module.dll> <type> <offset> [offset ...] [--watch <ms>]
+// Only use it on your own programs (see practice_target.cpp) or on games run
+// offline without anti-cheat (CS2: private server with bots, -insecure).
 //
-// type:    int | uint | int64 | float | double | ptr
-// offsets: hex (0x...) or decimal. All offsets but the last are followed as
-//          pointers, the last one is added to the final address and read.
-//
-// Example (offsets are placeholders, find real ones yourself):
-//   memreader game.exe game.dll int 0x1A2B30 0x340
-//     -> addr = base + 0x1A2B30; addr = *(uint64*)addr; value = *(int*)(addr + 0x340)
-//
-// Only use this on your own programs or on games started offline/without
-// anti-cheat (for CS2: private server with bots and the -insecure launch option).
+// Reading another process may need: same user + `sudo sysctl kernel.yama.ptrace_scope=0`,
+// or simply running with sudo.
 
-#ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN
-#endif
-#include <windows.h>
-#include <tlhelp32.h>
+#include <dirent.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include <chrono>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <thread>
 #include <vector>
 
 namespace
 {
-	bool EqualsNoCase(const wchar_t* A, const wchar_t* B)
+	struct State
 	{
-		return _wcsicmp(A, B) == 0;
-	}
-
-	DWORD FindProcessId(const std::wstring& Name)
-	{
-		HANDLE Snap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-		if (Snap == INVALID_HANDLE_VALUE)
-		{
-			return 0;
-		}
-		PROCESSENTRY32W Entry{};
-		Entry.dwSize = sizeof(Entry);
-		DWORD Pid = 0;
-		if (Process32FirstW(Snap, &Entry))
-		{
-			do
-			{
-				if (EqualsNoCase(Entry.szExeFile, Name.c_str()))
-				{
-					Pid = Entry.th32ProcessID;
-					break;
-				}
-			} while (Process32NextW(Snap, &Entry));
-		}
-		CloseHandle(Snap);
-		return Pid;
-	}
-
-	uintptr_t FindModuleBase(DWORD Pid, const std::wstring& Name)
-	{
-		HANDLE Snap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, Pid);
-		if (Snap == INVALID_HANDLE_VALUE)
-		{
-			return 0;
-		}
-		MODULEENTRY32W Entry{};
-		Entry.dwSize = sizeof(Entry);
+		pid_t Pid = 0;
+		std::string ProcessName;
+		std::string ModuleName;
 		uintptr_t Base = 0;
-		if (Module32FirstW(Snap, &Entry))
-		{
-			do
-			{
-				if (EqualsNoCase(Entry.szModule, Name.c_str()))
-				{
-					Base = reinterpret_cast<uintptr_t>(Entry.modBaseAddr);
-					break;
-				}
-			} while (Module32NextW(Snap, &Entry));
-		}
-		CloseHandle(Snap);
-		return Base;
+		std::string Type = "int";
+		std::vector<uintptr_t> Offsets;
+	};
+
+	std::string Basename(const std::string& Path)
+	{
+		const size_t Slash = Path.find_last_of('/');
+		return Slash == std::string::npos ? Path : Path.substr(Slash + 1);
 	}
 
-	bool ReadBytes(HANDLE Process, uintptr_t Address, void* Out, size_t Size)
+	bool IsNumber(const char* S)
 	{
-		SIZE_T Read = 0;
-		return ReadProcessMemory(Process, reinterpret_cast<LPCVOID>(Address), Out, Size, &Read) && Read == Size;
-	}
-
-	bool ParseOffset(const wchar_t* Text, uintptr_t& Out)
-	{
-		wchar_t* End = nullptr;
-		const unsigned long long Value = wcstoull(Text, &End, 0); // base 0: "0x.." hex, else decimal
-		if (End == Text || *End != L'\0')
-		{
-			return false;
-		}
-		Out = static_cast<uintptr_t>(Value);
+		if (!*S) return false;
+		for (; *S; ++S) if (*S < '0' || *S > '9') return false;
 		return true;
 	}
 
-	void Usage()
+	// Matches against the executable name (/proc/<pid>/exe) and /proc/<pid>/comm.
+	pid_t FindPid(const std::string& Name)
 	{
-		std::puts("Usage: memreader <process.exe> <module.dll> <type> <offset> [offset ...] [--watch <ms>]");
-		std::puts("type: int | uint | int64 | float | double | ptr");
-		std::puts("All offsets except the last are followed as pointers; the last is read as <type>.");
+		DIR* Dir = opendir("/proc");
+		if (!Dir) return 0;
+		pid_t Found = 0;
+		while (dirent* E = readdir(Dir))
+		{
+			if (!IsNumber(E->d_name)) continue;
+			const std::string Base = std::string("/proc/") + E->d_name;
+			std::string Comm;
+			std::ifstream(Base + "/comm") >> Comm;
+			char Exe[4096];
+			const ssize_t N = readlink((Base + "/exe").c_str(), Exe, sizeof(Exe) - 1);
+			const std::string ExeName = N > 0 ? Basename(std::string(Exe, N)) : "";
+			if (Comm == Name || ExeName == Name)
+			{
+				Found = static_cast<pid_t>(atoi(E->d_name));
+				break;
+			}
+		}
+		closedir(Dir);
+		return Found;
 	}
 
-	// Follows the chain and prints the final value. Returns false on any read error.
-	bool ReadChain(HANDLE Process, uintptr_t Base, const std::vector<uintptr_t>& Offsets, const std::wstring& Type)
+	// Lowest mapped address of a file whose basename equals ModuleName.
+	uintptr_t FindModuleBase(pid_t Pid, const std::string& ModuleName)
 	{
-		uintptr_t Address = Base;
-		for (size_t I = 0; I + 1 < Offsets.size(); ++I)
+		std::ifstream Maps("/proc/" + std::to_string(Pid) + "/maps");
+		std::string Line;
+		uintptr_t Lowest = 0;
+		while (std::getline(Maps, Line))
+		{
+			std::istringstream Ss(Line);
+			std::string Range, Perms, Off, Dev, Inode, Path;
+			Ss >> Range >> Perms >> Off >> Dev >> Inode;
+			std::getline(Ss, Path);
+			const size_t Start = Path.find_first_not_of(' ');
+			if (Start == std::string::npos) continue;
+			if (Basename(Path.substr(Start)) != ModuleName) continue;
+			const uintptr_t From = static_cast<uintptr_t>(strtoull(Range.c_str(), nullptr, 16));
+			if (Lowest == 0 || From < Lowest) Lowest = From;
+		}
+		return Lowest;
+	}
+
+	bool ReadBytes(pid_t Pid, uintptr_t Address, void* Out, size_t Size)
+	{
+		const int Fd = open(("/proc/" + std::to_string(Pid) + "/mem").c_str(), O_RDONLY); // read-only
+		if (Fd < 0) return false;
+		const ssize_t N = pread(Fd, Out, Size, static_cast<off_t>(Address));
+		close(Fd);
+		return N == static_cast<ssize_t>(Size);
+	}
+
+	bool ReadChain(const State& S)
+	{
+		uintptr_t Address = S.Base;
+		for (size_t I = 0; I + 1 < S.Offsets.size(); ++I)
 		{
 			uintptr_t Next = 0;
-			if (!ReadBytes(Process, Address + Offsets[I], &Next, sizeof(Next)))
+			if (!ReadBytes(S.Pid, Address + S.Offsets[I], &Next, sizeof(Next)))
 			{
-				std::printf("read failed at step %zu (address 0x%llX)\n", I, static_cast<unsigned long long>(Address + Offsets[I]));
+				std::printf("  read failed at step %zu (0x%lX)\n", I, (unsigned long)(Address + S.Offsets[I]));
 				return false;
 			}
+			std::printf("  [0x%lX] -> 0x%lX\n", (unsigned long)(Address + S.Offsets[I]), (unsigned long)Next);
 			Address = Next;
 		}
-		Address += Offsets.back();
-
-		union
-		{
-			int32_t I32;
-			uint32_t U32;
-			int64_t I64;
-			uintptr_t Ptr;
-			float F;
-			double D;
-		} V{};
-		V.I64 = 0;
+		Address += S.Offsets.back();
 
 		bool Ok = false;
-		if (Type == L"int")         { Ok = ReadBytes(Process, Address, &V.I32, 4); if (Ok) std::printf("0x%llX = %d\n", (unsigned long long)Address, V.I32); }
-		else if (Type == L"uint")   { Ok = ReadBytes(Process, Address, &V.U32, 4); if (Ok) std::printf("0x%llX = %u\n", (unsigned long long)Address, V.U32); }
-		else if (Type == L"int64")  { Ok = ReadBytes(Process, Address, &V.I64, 8); if (Ok) std::printf("0x%llX = %lld\n", (unsigned long long)Address, (long long)V.I64); }
-		else if (Type == L"float")  { Ok = ReadBytes(Process, Address, &V.F, 4);   if (Ok) std::printf("0x%llX = %f\n", (unsigned long long)Address, V.F); }
-		else if (Type == L"double") { Ok = ReadBytes(Process, Address, &V.D, 8);   if (Ok) std::printf("0x%llX = %f\n", (unsigned long long)Address, V.D); }
-		else if (Type == L"ptr")    { Ok = ReadBytes(Process, Address, &V.Ptr, sizeof(V.Ptr)); if (Ok) std::printf("0x%llX = 0x%llX\n", (unsigned long long)Address, (unsigned long long)V.Ptr); }
-		else
-		{
-			std::puts("unknown type");
-			return false;
-		}
-		if (!Ok)
-		{
-			std::printf("read failed at final address 0x%llX\n", static_cast<unsigned long long>(Address));
-		}
+		if (S.Type == "int")        { int32_t V;  if ((Ok = ReadBytes(S.Pid, Address, &V, 4))) std::printf("  0x%lX = %d\n", (unsigned long)Address, V); }
+		else if (S.Type == "uint")  { uint32_t V; if ((Ok = ReadBytes(S.Pid, Address, &V, 4))) std::printf("  0x%lX = %u\n", (unsigned long)Address, V); }
+		else if (S.Type == "int64") { int64_t V;  if ((Ok = ReadBytes(S.Pid, Address, &V, 8))) std::printf("  0x%lX = %lld\n", (unsigned long)Address, (long long)V); }
+		else if (S.Type == "float") { float V;    if ((Ok = ReadBytes(S.Pid, Address, &V, 4))) std::printf("  0x%lX = %f\n", (unsigned long)Address, V); }
+		else if (S.Type == "double"){ double V;   if ((Ok = ReadBytes(S.Pid, Address, &V, 8))) std::printf("  0x%lX = %f\n", (unsigned long)Address, V); }
+		else if (S.Type == "ptr")   { uintptr_t V;if ((Ok = ReadBytes(S.Pid, Address, &V, 8))) std::printf("  0x%lX = 0x%lX\n", (unsigned long)Address, (unsigned long)V); }
+		if (!Ok) std::printf("  read failed at final address 0x%lX (permissions? see header comment)\n", (unsigned long)Address);
 		return Ok;
+	}
+
+	std::string Prompt(const char* Text)
+	{
+		std::printf("%s", Text);
+		std::fflush(stdout);
+		std::string Line;
+		std::getline(std::cin, Line);
+		return Line;
+	}
+
+	void ShowStatus(const State& S)
+	{
+		std::printf("\n=== MemoryReader (read-only) ===\n");
+		std::printf("process : %s%s\n", S.ProcessName.empty() ? "(none)" : S.ProcessName.c_str(), S.Pid ? "" : "");
+		if (S.Pid) std::printf("pid     : %d\n", S.Pid);
+		std::printf("module  : %s", S.ModuleName.empty() ? "(none)" : S.ModuleName.c_str());
+		if (S.Base) std::printf("  base = 0x%lX", (unsigned long)S.Base);
+		std::printf("\ntype    : %s\noffsets :", S.Type.c_str());
+		for (uintptr_t O : S.Offsets) std::printf(" 0x%lX", (unsigned long)O);
+		std::printf("\n");
 	}
 }
 
-int wmain(int Argc, wchar_t** Argv)
+int main()
 {
-	if (Argc < 5)
+	State S;
+	for (;;)
 	{
-		Usage();
-		return 1;
-	}
+		ShowStatus(S);
+		std::printf("\n1) select process\n2) select module\n3) set type (int/uint/int64/float/double/ptr)\n"
+		            "4) set offsets (hex, space separated; last one is read)\n5) read once\n6) watch (Ctrl+C to stop)\n0) quit\n");
+		const std::string Choice = Prompt("> ");
 
-	const std::wstring ProcessName = Argv[1];
-	const std::wstring ModuleName = Argv[2];
-	const std::wstring Type = Argv[3];
-	std::vector<uintptr_t> Offsets;
-	int WatchMs = 0;
-
-	for (int I = 4; I < Argc; ++I)
-	{
-		if (wcscmp(Argv[I], L"--watch") == 0 && I + 1 < Argc)
+		if (Choice == "0") break;
+		else if (Choice == "1")
 		{
-			WatchMs = _wtoi(Argv[++I]);
-			continue;
+			S.ProcessName = Prompt("process name (e.g. cs2): ");
+			S.Pid = FindPid(S.ProcessName);
+			S.Base = 0;
+			std::printf(S.Pid ? "found pid %d\n" : "not found\n", S.Pid);
 		}
-		uintptr_t Offset = 0;
-		if (!ParseOffset(Argv[I], Offset))
+		else if (Choice == "2")
 		{
-			std::wprintf(L"invalid offset: %ls\n", Argv[I]);
-			return 1;
+			if (!S.Pid) { std::puts("select a process first"); continue; }
+			S.ModuleName = Prompt("module name (e.g. libclient.so): ");
+			S.Base = FindModuleBase(S.Pid, S.ModuleName);
+			if (S.Base) std::printf("base = 0x%lX\n", (unsigned long)S.Base);
+			else std::puts("module not found in /proc/<pid>/maps");
 		}
-		Offsets.push_back(Offset);
-	}
-	if (Offsets.empty())
-	{
-		Usage();
-		return 1;
-	}
-
-	const DWORD Pid = FindProcessId(ProcessName);
-	if (Pid == 0)
-	{
-		std::wprintf(L"process not found: %ls\n", ProcessName.c_str());
-		return 2;
-	}
-
-	const uintptr_t Base = FindModuleBase(Pid, ModuleName);
-	if (Base == 0)
-	{
-		std::wprintf(L"module not found: %ls (try running as the same user / administrator)\n", ModuleName.c_str());
-		return 3;
-	}
-
-	// Read-only access: no PROCESS_VM_WRITE / PROCESS_VM_OPERATION requested.
-	HANDLE Process = OpenProcess(PROCESS_VM_READ | PROCESS_QUERY_LIMITED_INFORMATION, FALSE, Pid);
-	if (!Process)
-	{
-		std::printf("OpenProcess failed (error %lu)\n", GetLastError());
-		return 4;
-	}
-
-	std::wprintf(L"pid %lu, %ls base = 0x%llX\n", Pid, ModuleName.c_str(), static_cast<unsigned long long>(Base));
-
-	int Result = 0;
-	if (WatchMs > 0)
-	{
-		for (;;)
+		else if (Choice == "3")
 		{
-			ReadChain(Process, Base, Offsets, Type);
-			std::this_thread::sleep_for(std::chrono::milliseconds(WatchMs));
+			const std::string T = Prompt("type: ");
+			if (T == "int" || T == "uint" || T == "int64" || T == "float" || T == "double" || T == "ptr") S.Type = T;
+			else std::puts("unknown type");
+		}
+		else if (Choice == "4")
+		{
+			std::istringstream Ss(Prompt("offsets: "));
+			std::vector<uintptr_t> New;
+			std::string Tok;
+			bool Valid = true;
+			while (Ss >> Tok)
+			{
+				char* End = nullptr;
+				const unsigned long long V = strtoull(Tok.c_str(), &End, 0); // 0x.. hex, else decimal
+				if (*End) { Valid = false; break; }
+				New.push_back(static_cast<uintptr_t>(V));
+			}
+			if (Valid && !New.empty()) S.Offsets = New;
+			else std::puts("invalid offsets, unchanged");
+		}
+		else if (Choice == "5" || Choice == "6")
+		{
+			if (!S.Pid || !S.Base || S.Offsets.empty()) { std::puts("need process, module and offsets first"); continue; }
+			if (Choice == "5") ReadChain(S);
+			else for (;;)
+			{
+				if (!ReadChain(S)) break;
+				std::this_thread::sleep_for(std::chrono::milliseconds(500));
+			}
 		}
 	}
-	else if (!ReadChain(Process, Base, Offsets, Type))
-	{
-		Result = 5;
-	}
-
-	CloseHandle(Process);
-	return Result;
+	return 0;
 }
