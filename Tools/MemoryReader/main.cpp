@@ -28,6 +28,11 @@
 #include <string>
 #include <thread>
 #include <vector>
+#include <cstdarg>
+
+#ifdef WITH_OVERLAY
+#include "overlay.h"
+#endif
 
 namespace
 {
@@ -126,22 +131,33 @@ namespace
 		return Buf;
 	}
 
+	std::string Fmt(const char* Format, ...)
+	{
+		char Buf[512];
+		va_list Args;
+		va_start(Args, Format);
+		std::vsnprintf(Buf, sizeof(Buf), Format, Args);
+		va_end(Args);
+		return Buf;
+	}
+
 	// Labels ON : every offset is marked with its role (base / pointer step / value).
-	// Labels OFF: only the final value is printed.
-	bool ReadChain(const State& S)
+	// Labels OFF: only the final value is produced.
+	// Used by both the terminal live view and the overlay.
+	bool ReadChainLines(const State& S, std::vector<std::string>& Lines)
 	{
 		uintptr_t Address = S.Base;
-		if (S.Labels) std::printf("  base    %s = 0x%lX\n", S.ModuleName.c_str(), (unsigned long)S.Base);
+		if (S.Labels) Lines.push_back(Fmt("base    %s = 0x%lX", S.ModuleName.c_str(), (unsigned long)S.Base));
 		for (size_t I = 0; I + 1 < S.Offsets.size(); ++I)
 		{
 			uintptr_t Next = 0;
 			if (!ReadBytes(S.Pid, Address + S.Offsets[I], &Next, sizeof(Next)))
 			{
-				std::printf("  read failed at step %zu (0x%lX)\n", I + 1, (unsigned long)(Address + S.Offsets[I]));
+				Lines.push_back(Fmt("read failed at step %zu (0x%lX)", I + 1, (unsigned long)(Address + S.Offsets[I])));
 				return false;
 			}
 			if (S.Labels)
-				std::printf("  ptr %zu   [%s + 0x%lX] -> 0x%lX\n", I + 1, I == 0 ? S.ModuleName.c_str() : "ptr", (unsigned long)S.Offsets[I], (unsigned long)Next);
+				Lines.push_back(Fmt("ptr %zu   [%s + 0x%lX] -> 0x%lX", I + 1, I == 0 ? S.ModuleName.c_str() : "ptr", (unsigned long)S.Offsets[I], (unsigned long)Next));
 			Address = Next;
 		}
 		Address += S.Offsets.back();
@@ -150,15 +166,23 @@ namespace
 		const std::string Value = FormatValue(S.Pid, Address, S.Type, Ok);
 		if (!Ok)
 		{
-			std::printf("  read failed at final address 0x%lX (permissions? see header comment)\n", (unsigned long)Address);
+			Lines.push_back(Fmt("read failed at final address 0x%lX (permissions? see header comment)", (unsigned long)Address));
 			return false;
 		}
 		if (S.Labels)
-			std::printf("  value   [%s + 0x%lX] (%s) at 0x%lX = %s\n", S.Offsets.size() == 1 ? S.ModuleName.c_str() : "ptr",
-			            (unsigned long)S.Offsets.back(), S.Type.c_str(), (unsigned long)Address, Value.c_str());
+			Lines.push_back(Fmt("value   [%s + 0x%lX] (%s) at 0x%lX = %s", S.Offsets.size() == 1 ? S.ModuleName.c_str() : "ptr",
+			                    (unsigned long)S.Offsets.back(), S.Type.c_str(), (unsigned long)Address, Value.c_str()));
 		else
-			std::printf("  %s\n", Value.c_str());
+			Lines.push_back(Value);
 		return true;
+	}
+
+	bool ReadChain(const State& S)
+	{
+		std::vector<std::string> Lines;
+		const bool Ok = ReadChainLines(S, Lines);
+		for (const std::string& L : Lines) std::printf("  %s\n", L.c_str());
+		return Ok;
 	}
 
 	// Terminal without line buffering/echo so single key presses (Insert) arrive immediately.
@@ -259,7 +283,7 @@ int main()
 	{
 		ShowStatus(S);
 		std::printf("\n1) select process\n2) select module\n3) set type (int/uint/int64/float/double/ptr)\n"
-		            "4) set offsets (hex, space separated; last one is read)\n5) read once\n6) live view (press Insert there for the menu)\n7) offset labels on/off\n0) quit\n");
+		            "4) set offsets (hex, space separated; last one is read)\n5) read once\n6) live view (press Insert there for the menu)\n7) offset labels on/off\n8) overlay (Insert menu, X11)\n0) quit\n");
 		const std::string Choice = Prompt("> ");
 
 		if (Choice == "0") break;
@@ -301,6 +325,18 @@ int main()
 			else std::puts("invalid offsets, unchanged");
 		}
 		else if (Choice == "7") S.Labels = !S.Labels;
+		else if (Choice == "8")
+		{
+			if (!S.Pid || !S.Base || S.Offsets.empty()) { std::puts("need process, module and offsets first"); continue; }
+#ifdef WITH_OVERLAY
+			std::string Error;
+			std::puts("overlay running: Insert = menu, Ctrl+C in this terminal = stop");
+			if (!RunOverlay([&S] { std::vector<std::string> L; ReadChainLines(S, L); return L; }, S.Labels, Error))
+				std::printf("overlay failed: %s\n", Error.c_str());
+#else
+			std::puts("built without overlay support (needs libx11-dev and libxext-dev, then `make`)");
+#endif
+		}
 		else if (Choice == "5" || Choice == "6")
 		{
 			if (!S.Pid || !S.Base || S.Offsets.empty()) { std::puts("need process, module and offsets first"); continue; }

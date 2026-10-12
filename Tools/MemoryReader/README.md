@@ -23,6 +23,7 @@ Health counts down once per second, so you can see your chain is correct.
 5. read once
 6. live view (refreshes every 500 ms)
 7. offset labels on/off
+8. overlay (X11), see below
 
 ## Live view and the Insert menu
 In the live view press **Insert** to open/close a menu:
@@ -36,6 +37,17 @@ Labels ON marks every offset with its role:
     value   [ptr + 0x4] (int) at 0x5565AFD902B4 = 97
 
 Labels OFF prints only the value. If your keyboard has no Insert key, use menu item 7.
+
+## Overlay (menu item 8, X11)
+A small text panel in the top-left screen corner, always on top and click-through,
+showing the same lines as the live view (it draws only this panel, nothing at in-game positions).
+- **Insert** opens/closes the menu: `1` = offset labels on/off, `2` = close the overlay
+  (Ctrl+C in the terminal also stops it).
+- Insert is grabbed globally while the overlay runs, `1`/`2` only while the menu is open.
+- Needs `libx11-dev` and `libxext-dev` at build time (`make` detects them). Without a
+  compositor the panel background is opaque instead of transparent.
+- The game must run windowed/borderless; exclusive fullscreen hides overlays. Wayland
+  sessions need XWayland (the game running through XWayland is the normal case).
 
 ## Permissions
 Reading another process may need `sudo`, or `sudo sysctl kernel.yama.ptrace_scope=0`.
